@@ -1,0 +1,16 @@
+version: '2'
+services:
+  projects-mysql:
+    image: mysql:8.0.22
+    # volumes:
+    #     - ~/volumes/jhipster/share2goEnterprise/mysql/:/var/lib/mysql/
+    environment:
+      - MYSQL_USER=project
+      - MYSQL_PASSWORD=01e072588583e7fa10498ceb801711f643c28030ca85a9b79fec9104d29e285b
+      - MYSQL_ROOT_PASSWORD=01e072588583e7fa10498ceb801711f643c28030ca85a9b79fec9104d29e285b
+      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+      - MYSQL_DATABASE=project
+      - TZ=UTC
+    ports:
+      - 3308:3306
+    command: mysqld --lower_case_table_names=1 --skip-ssl --character_set_server=utf8mb4 --explicit_defaults_for_timestamp --default-authentication-plugin=mysql_native_password
