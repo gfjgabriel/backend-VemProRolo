@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, BaseEntity, CreateDateColumn, UpdateDateColumn, IsNull } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, BaseEntity, CreateDateColumn, UpdateDateColumn, IsNull, BeforeInsert } from 'typeorm';
 
 @Entity()
 export class User extends BaseEntity {
@@ -23,5 +23,10 @@ export class User extends BaseEntity {
 
   @UpdateDateColumn({ name: 'updated_date', nullable: false })
   updatedDate: Date;
+
+  @BeforeInsert()
+  emailToLowerCase() {
+    this.email = this.email.toLowerCase();
+  }
 
 }

@@ -9,5 +9,6 @@ import { UserFacade } from 'src/facade/user.facade';
   imports: [TypeOrmModule.forFeature([User])],
   providers: [UserService, UserFacade],
   controllers: [UserController],
+  exports: [TypeOrmModule.forFeature([User]), UserService]
 })
 export class UserModule {}
