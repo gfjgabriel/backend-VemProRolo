@@ -1,10 +1,10 @@
 import { Controller, Get, Post, Body } from '@nestjs/common';
 import { UserService } from '../services/user.service';
 import { User } from '../entities/user.entity';
-import { UserCreateDto } from 'src/dtos/user/create-user.dto';
-import { UserDto } from 'src/dtos/user/user.dto';
+import { UserCreateDto } from 'src/entities/dtos/user/create-user.dto';
+import { UserDto } from 'src/entities/dtos/user/user.dto';
 import { UserFacade } from 'src/facade/user.facade';
-import { AuthDto } from 'src/dtos/user/auth.dto';
+import { AuthDto } from 'src/entities/dtos/user/auth.dto';
 
 @Controller('users')
 export class UserController {

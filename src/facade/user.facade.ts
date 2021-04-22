@@ -1,8 +1,8 @@
 import { Injectable } from "@nestjs/common";
 import { plainToClass } from "class-transformer";
-import { AuthDto } from "src/dtos/user/auth.dto";
-import { UserCreateDto } from "src/dtos/user/create-user.dto";
-import { UserDto } from "src/dtos/user/user.dto";
+import { AuthDto } from "src/entities/dtos/user/auth.dto";
+import { UserCreateDto } from "src/entities/dtos/user/create-user.dto";
+import { UserDto } from "src/entities/dtos/user/user.dto";
 import { User } from "src/entities/user.entity";
 import { UserService } from "src/services/user.service";
 

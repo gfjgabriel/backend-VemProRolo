@@ -13,4 +13,14 @@ export class AuthService {
       }
       return null;
     }
+
+    googleLogin(req) {
+      if (!req.user) {
+        return 'No user for Google';
+      }
+      return {
+        message: 'User Info from Google',
+        user: req.user
+      }
+    }
 }

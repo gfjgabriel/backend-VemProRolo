@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { AuthDto } from 'src/dtos/user/auth.dto';
-import { UserCreateDto } from 'src/dtos/user/create-user.dto';
+import { AuthDto } from 'src/entities/dtos/user/auth.dto';
+import { UserCreateDto } from 'src/entities/dtos/user/create-user.dto';
 import { ErrorConstants } from 'src/utils/error-constants.enum';
 import { Repository } from 'typeorm';
 import { User } from '../entities/user.entity';
@@ -43,6 +43,10 @@ export class UserService {
       }
     );
     return user;
+  }
+
+  findOneByEmail(email: string): Promise<User | undefined> {
+    return this.userRepository.findOne({ email });
   }
 
   async remove(id: string): Promise<void> {
