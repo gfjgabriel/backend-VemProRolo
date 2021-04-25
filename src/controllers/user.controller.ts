@@ -15,7 +15,7 @@ export class UserController {
     return this.userFacade.findAll();
   }
 
-  @Get('auth')
+  @Post('auth')
   getUser(@Body() authDto: AuthDto): Promise<UserDto> {
     return this.userFacade.findOneByEmailAndPassword(authDto);
   }
