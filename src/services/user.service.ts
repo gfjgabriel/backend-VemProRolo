@@ -16,19 +16,13 @@ export class UserService {
   ) {}
 
   create(userCreateDto: UserCreateDto): Promise<User> {
+    console.log(userCreateDto);
     userCreateDto.password = bcrypt.hashSync(userCreateDto.password, parseInt(process.env.SALT_ROUNDS, 10));
     return this.userRepository.save(userCreateDto);
   }
 
-  findAll(): Promise<User[]> {
-    return this.userRepository.find();
-  }
-
-  findOne(id: string): Promise<User> {
-    return this.userRepository.findOne(id);
-  }
-
   findOneByEmailAndPassword(authDto: AuthDto): Promise<User> {
+    console.log(authDto);
     const email = authDto.email;
     var user = this.userRepository.findOne({ email }).then(
       it => {
@@ -44,6 +38,16 @@ export class UserService {
     );
     return user;
   }
+
+  findAll(): Promise<User[]> {
+    return this.userRepository.find();
+  }
+
+  findOne(id: string): Promise<User> {
+    return this.userRepository.findOne(id);
+  }
+
+  
 
   findOneByEmail(email: string): Promise<User | undefined> {
     return this.userRepository.findOne({ email });

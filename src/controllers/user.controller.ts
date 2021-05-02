@@ -22,6 +22,7 @@ export class UserController {
 
   @Post()
   createUser(@Body() userCreateDto: UserCreateDto): Promise<UserDto> {
+    console.log(userCreateDto)
     return this.userFacade.create(userCreateDto);
   }
 
