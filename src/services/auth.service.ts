@@ -74,7 +74,8 @@ export class AuthService {
             resolve(result.user);
           }
         });
-      });      
+      })
+      .then(() => this.userService.verifyUserEmail(email));      
     }
 
     async resendConfirmationCode(email: string) {

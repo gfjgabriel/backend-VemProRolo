@@ -24,6 +24,9 @@ export class User extends BaseEntity {
   @UpdateDateColumn({ name: 'updated_date', nullable: false })
   updatedDate: Date;
 
+  @Column({ name: 'is_email_verified', default: false, nullable: false })
+  isEmailVerified: Boolean;
+
   @BeforeInsert()
   emailToLowerCase() {
     this.email = this.email.toLowerCase();

@@ -11,5 +11,7 @@ export class UserDto {
     password: string;
     
     phone: string;
+
+    isEmailVeified: Boolean;
     
 }

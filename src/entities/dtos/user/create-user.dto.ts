@@ -14,6 +14,4 @@ export class UserCreateDto {
     @IsNotEmpty()
     password: string;
     
-    phone: string;
-    
 }

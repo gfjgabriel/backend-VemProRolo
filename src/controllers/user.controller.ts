@@ -23,7 +23,7 @@ export class UserController {
   }
 
   @Post()
-  createUser(@Body() dto: AuthDto): Promise<UserDto> {
+  createUser(@Body() dto: UserCreateDto): Promise<UserDto> {
     return this.userFacade.create(dto);
   }
 

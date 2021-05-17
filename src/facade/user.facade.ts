@@ -21,7 +21,7 @@ export class UserFacade {
         .then(it => it.map(item => plainToClass(UserDto, item)));
     }
 
-    create(dto: AuthDto): Promise<UserDto> {
+    create(dto: UserCreateDto): Promise<UserDto> {
         return this.userService.createUser(dto)
         .then(it => plainToClass(UserDto, it));
     }

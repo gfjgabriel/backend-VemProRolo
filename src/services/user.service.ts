@@ -1,6 +1,5 @@
-import { Dependencies, HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ConfigService } from 'aws-sdk';
 import { GetUserResponse } from 'aws-sdk/clients/cognitoidentityserviceprovider';
 import { AuthDto } from 'src/entities/dtos/auth/auth.dto';
 import { UserCreateDto } from 'src/entities/dtos/user/create-user.dto';
@@ -20,10 +19,28 @@ export class UserService {
     private readonly cognito: CognitoService
   ) {}
 
-  createUser(userCreateDto: AuthDto): Promise<User> {
+  createUser(userCreateDto: UserCreateDto): Promise<User> {
     console.log(userCreateDto);
     userCreateDto.password = bcrypt.hashSync(userCreateDto.password, parseInt(process.env.SALT_ROUNDS, 10));
     return this.userRepository.save(userCreateDto);
+  }
+
+  verifyUserEmail(email: string) {
+    new Promise((resolve, reject) => {
+      this.userRepository.findOne({ email })
+      .then(
+        it => {
+          if (!it) {
+            reject(it);
+          } else {
+            it.isEmailVerified = true;
+            this.userRepository.save(it);
+            resolve(it);
+          }
+        }
+      );
+    });
+    
   }
 
   findOneByEmailAndPassword(authDto: AuthDto): Promise<User> {

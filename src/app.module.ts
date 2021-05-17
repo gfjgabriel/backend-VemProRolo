@@ -17,7 +17,7 @@ if (process.env.ENVIRONMENT === 'PRODUCTION') {
 }
 @Module({
   imports: [
-    ConfigModule.forRoot({ envFilePath }),
+    ConfigModule.forRoot({ envFilePath, isGlobal: true }),
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: process.env.MYSQL_DB_HOST,

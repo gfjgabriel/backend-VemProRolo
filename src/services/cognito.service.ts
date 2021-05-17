@@ -18,7 +18,6 @@ export class CognitoService {
         this.user = await this.client.getUser({
             AccessToken: token
         }).promise()
-        console.log(this.user);
         return this.user
     }
     public loadCurrentUser(): GetUserResponse {
