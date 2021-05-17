@@ -1,21 +1,26 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Dependencies, HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { AuthDto } from 'src/entities/dtos/user/auth.dto';
+import { ConfigService } from 'aws-sdk';
+import { GetUserResponse } from 'aws-sdk/clients/cognitoidentityserviceprovider';
+import { AuthDto } from 'src/entities/dtos/auth/auth.dto';
 import { UserCreateDto } from 'src/entities/dtos/user/create-user.dto';
 import { ErrorConstants } from 'src/utils/error-constants.enum';
 import { Repository } from 'typeorm';
 import { User } from '../entities/user.entity';
+import { CognitoService } from './cognito.service';
 
 const bcrypt = require('bcrypt');
 
 @Injectable()
 export class UserService {
+  
   constructor(
     @InjectRepository(User)
     private userRepository: Repository<User>,
+    private readonly cognito: CognitoService
   ) {}
 
-  create(userCreateDto: UserCreateDto): Promise<User> {
+  createUser(userCreateDto: AuthDto): Promise<User> {
     console.log(userCreateDto);
     userCreateDto.password = bcrypt.hashSync(userCreateDto.password, parseInt(process.env.SALT_ROUNDS, 10));
     return this.userRepository.save(userCreateDto);
@@ -47,8 +52,6 @@ export class UserService {
     return this.userRepository.findOne(id);
   }
 
-  
-
   findOneByEmail(email: string): Promise<User | undefined> {
     return this.userRepository.findOne({ email });
   }
@@ -56,4 +59,9 @@ export class UserService {
   async remove(id: string): Promise<void> {
     await this.userRepository.delete(id);
   }
+
+  getCurrentUser(): GetUserResponse {
+    return this.cognito.loadCurrentUser();
+  }
+
 }

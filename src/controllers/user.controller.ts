@@ -1,16 +1,18 @@
-import { Controller, Get, Post, Body } from '@nestjs/common';
+import { Controller, Get, Post, Body, UseGuards } from '@nestjs/common';
 import { UserService } from '../services/user.service';
 import { User } from '../entities/user.entity';
 import { UserCreateDto } from 'src/entities/dtos/user/create-user.dto';
 import { UserDto } from 'src/entities/dtos/user/user.dto';
 import { UserFacade } from 'src/facade/user.facade';
-import { AuthDto } from 'src/entities/dtos/user/auth.dto';
-
+import { AuthDto } from 'src/entities/dtos/auth/auth.dto';
+import { AuthorizerGuard } from '../auth/guards/cognito.guard'
+import { GetUserResponse } from 'aws-sdk/clients/cognitoidentityserviceprovider';
 @Controller('users')
 export class UserController {
   constructor(private readonly userFacade: UserFacade) {}
 
   @Get()
+  @UseGuards(AuthorizerGuard)
   getAllUsers(): Promise<UserDto[]> {
     return this.userFacade.findAll();
   }
@@ -21,9 +23,14 @@ export class UserController {
   }
 
   @Post()
-  createUser(@Body() userCreateDto: UserCreateDto): Promise<UserDto> {
-    console.log(userCreateDto)
-    return this.userFacade.create(userCreateDto);
+  createUser(@Body() dto: AuthDto): Promise<UserDto> {
+    return this.userFacade.create(dto);
+  }
+
+  @Get('current')
+  @UseGuards(AuthorizerGuard)
+  getCurrentUser(): GetUserResponse {
+    return this.userFacade.getCurrentUser();
   }
 
 }

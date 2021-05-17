@@ -7,6 +7,9 @@ declare namespace NodeJS {
         MYSQL_DB_NAME?: string;
         PORT?: string;
         ENVIRONMENT?: Environment;
+        COGNITO_USER_POOL_ID?: string;
+        COGNITO_CLIENT_ID?: string;
+        COGNITO_REGION?: string;
     }
 
     export type Environment = 'DEVELOPMENT' | 'PRODUCTION' | 'TEST'

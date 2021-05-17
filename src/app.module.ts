@@ -5,6 +5,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './modules/user.module';
 import { AuthModule } from './modules/auth.module';
 import { ConfigModule } from '@nestjs/config';
+import { AuthorizerGuard } from './auth/guards/cognito.guard';
+import { CognitoService } from './services/cognito.service';
 
 let envFilePath = '.env.development';
 console.log(`Running in ${process.env.ENVIRONMENT}`)

@@ -1,6 +1,7 @@
 import { Injectable } from "@nestjs/common";
+import { GetUserResponse } from "aws-sdk/clients/cognitoidentityserviceprovider";
 import { plainToClass } from "class-transformer";
-import { AuthDto } from "src/entities/dtos/user/auth.dto";
+import { AuthDto } from "src/entities/dtos/auth/auth.dto";
 import { UserCreateDto } from "src/entities/dtos/user/create-user.dto";
 import { UserDto } from "src/entities/dtos/user/user.dto";
 import { User } from "src/entities/user.entity";
@@ -20,9 +21,13 @@ export class UserFacade {
         .then(it => it.map(item => plainToClass(UserDto, item)));
     }
 
-    create(userCreateDto: UserCreateDto): Promise<UserDto> {
-        return this.userService.create(userCreateDto)
+    create(dto: AuthDto): Promise<UserDto> {
+        return this.userService.createUser(dto)
         .then(it => plainToClass(UserDto, it));
+    }
+
+    getCurrentUser(): GetUserResponse {
+        return this.userService.getCurrentUser();
     }
 
 }
