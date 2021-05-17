@@ -1,7 +1,9 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { GetUserResponse } from 'aws-sdk/clients/cognitoidentityserviceprovider';
+import { isEmail } from 'class-validator';
 import { AuthDto } from 'src/entities/dtos/auth/auth.dto';
+import { ResetPasswordDto } from 'src/entities/dtos/auth/reset-password.dto';
 import { UserCreateDto } from 'src/entities/dtos/user/create-user.dto';
 import { ErrorConstants } from 'src/utils/error-constants.enum';
 import { Repository } from 'typeorm';
@@ -40,7 +42,13 @@ export class UserService {
         }
       );
     });
-    
+  }
+
+  async updatePassword(dto: ResetPasswordDto) {
+    const { email, password } = dto;
+    var user = await this.findOneByEmail(email);
+    user.password = bcrypt.hashSync(password, parseInt(process.env.SALT_ROUNDS, 10));
+    return this.userRepository.save(user);
   }
 
   findOneByEmailAndPassword(authDto: AuthDto): Promise<User> {
@@ -69,16 +77,31 @@ export class UserService {
     return this.userRepository.findOne(id);
   }
 
-  findOneByEmail(email: string): Promise<User | undefined> {
-    return this.userRepository.findOne({ email });
+  async findOneByEmail(email: string): Promise<User> {
+    return new Promise((resolve, reject) => {
+      return this.userRepository.findOne({ email }).then(
+        it => {
+          /*if (it === undefined) {
+            throw new HttpException(ErrorConstants.USER_NOT_FOUND, HttpStatus.NOT_FOUND);
+          }*/
+          if (!it) {
+            reject(it);
+          } else {
+            resolve(it);
+          }
+        }
+      );
+    });
   }
 
   async remove(id: string): Promise<void> {
     await this.userRepository.delete(id);
   }
 
-  getCurrentUser(): GetUserResponse {
-    return this.cognito.loadCurrentUser();
+  async getCurrentUser(): Promise<User> {
+    var cognitoUser = this.cognito.loadCurrentUser();
+    var email = cognitoUser.UserAttributes.find(it => it.Name == "email").Value;
+    return await this.findOneByEmail(email)
   }
 
 }

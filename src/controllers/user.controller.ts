@@ -29,7 +29,7 @@ export class UserController {
 
   @Get('current')
   @UseGuards(AuthorizerGuard)
-  getCurrentUser(): GetUserResponse {
+  getCurrentUser(): Promise<UserDto> {
     return this.userFacade.getCurrentUser();
   }
 

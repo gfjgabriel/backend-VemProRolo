@@ -26,8 +26,9 @@ export class UserFacade {
         .then(it => plainToClass(UserDto, it));
     }
 
-    getCurrentUser(): GetUserResponse {
-        return this.userService.getCurrentUser();
+    getCurrentUser(): Promise<UserDto> {
+        return this.userService.getCurrentUser()
+        .then(it => plainToClass(UserDto, it));
     }
 
 }

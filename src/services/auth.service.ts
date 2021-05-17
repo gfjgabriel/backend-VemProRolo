@@ -1,6 +1,6 @@
 
 import { AuthConfig } from '../auth/auth.config';
-import { Inject, Injectable } from '@nestjs/common';
+import { BadRequestException, HttpException, Inject, Injectable } from '@nestjs/common';
 import { UserService } from './user.service';
 import {
   AuthenticationDetails,
@@ -13,6 +13,8 @@ import { AuthDto } from 'src/entities/dtos/auth/auth.dto';
 import { ConfirmationCodeDto } from 'src/entities/dtos/auth/confirmation-code.dto';
 import { RegisterDto } from 'src/entities/dtos/auth/register.dto';
 import { UserSimpleDto } from 'src/entities/dtos/user/user-simple.dto';
+import { isEmail } from 'class-validator';
+import { ResetPasswordDto } from 'src/entities/dtos/auth/reset-password.dto';
 @Injectable()
 export class AuthService {
   private userPool: CognitoUserPool;
@@ -94,6 +96,45 @@ export class AuthService {
           }
         });
       });      
+    }
+
+    async sendForgotPasswordEmail(email: string) {
+      const userData = {
+        Username: email,
+        Pool: this.userPool,
+      };
+      var cognitoUser = new CognitoUser(userData);
+      return new Promise((resolve, reject) => {
+        return cognitoUser.forgotPassword({
+          onSuccess: result => {
+            resolve(result);
+          },
+          onFailure: err => {
+            reject(err);
+          }
+        });
+      });      
+    }
+
+    async resetPasswordWithCodeVerification(dto: ResetPasswordDto) {
+      const { email, code, password } = dto;
+      const userData = {
+        Username: email,
+        Pool: this.userPool,
+      };
+
+      var cognitoUser = new CognitoUser(userData);
+      return new Promise((resolve, reject) => {
+        return cognitoUser.confirmPassword(code, password, {
+          onSuccess: () => {
+            resolve('ok');
+          },
+          onFailure: err => {
+            reject(err);
+          },
+        });
+      })
+      .then(() => this.userService.updatePassword(dto));
     }
 
     authenticateUser(user: AuthDto) {
