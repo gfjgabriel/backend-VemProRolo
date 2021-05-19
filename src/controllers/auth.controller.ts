@@ -3,6 +3,7 @@ import { AuthGuard } from "@nestjs/passport";
 import { AuthDto } from "src/entities/dtos/auth/auth.dto";
 import { ConfirmationCodeDto } from "src/entities/dtos/auth/confirmation-code.dto";
 import { RegisterDto } from "src/entities/dtos/auth/register.dto";
+import { UserEmailDto } from "src/entities/dtos/user/user-email.dto";
 import { AuthService } from "src/services/auth.service";
 
 @Controller('auth')
@@ -24,36 +25,36 @@ export class AuthController {
     @Post('register')
     async register(@Body() authenticateRequest: RegisterDto) {
         try {
-        return await this.authService.register(authenticateRequest);
+            return await this.authService.register(authenticateRequest);
         } catch (e) {
-        throw new BadRequestException(e.message);
+            throw new BadRequestException(e.message);
         }
     }
 
     @Post('login')
     async login(@Body() authenticateRequest: AuthDto) {
         try {
-        return await this.authService.authenticateUser(authenticateRequest);
+            return await this.authService.authenticateUser(authenticateRequest);
         } catch (e) {
-        throw new BadRequestException(e.message);
+            throw new BadRequestException(e.message);
         }
     }
 
     @Post('verify-email')
     async verifyEmail(@Body() confirmationCode: ConfirmationCodeDto) {
         try {
-        return await this.authService.verifyEmail(confirmationCode);
+            return await this.authService.verifyEmail(confirmationCode);
         } catch (e) {
-        throw new BadRequestException(e.message);
+            throw new BadRequestException(e.message);
         }
     }
 
     @Post('resend-code')
-    async resendConfirmationCode(@Body() email: string) {
+    async resendConfirmationCode(@Body() dto: UserEmailDto) {
         try {
-        return await this.authService.resendConfirmationCode(email);
+            return await this.authService.resendConfirmationCode(dto);
         } catch (e) {
-        throw new BadRequestException(e.message);
+            throw new BadRequestException(e.message);
         }
     }
 }

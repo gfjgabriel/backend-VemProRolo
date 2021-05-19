@@ -1,20 +1,18 @@
 
 import { AuthConfig } from '../auth/auth.config';
-import { BadRequestException, HttpException, Inject, Injectable } from '@nestjs/common';
+import { HttpException, Inject, Injectable } from '@nestjs/common';
 import { UserService } from './user.service';
 import {
   AuthenticationDetails,
   CognitoUser,
   CognitoUserAttribute,
-  CognitoUserPool,
-
+  CognitoUserPool
 } from 'amazon-cognito-identity-js';
 import { AuthDto } from 'src/entities/dtos/auth/auth.dto';
 import { ConfirmationCodeDto } from 'src/entities/dtos/auth/confirmation-code.dto';
 import { RegisterDto } from 'src/entities/dtos/auth/register.dto';
-import { UserSimpleDto } from 'src/entities/dtos/user/user-simple.dto';
-import { isEmail } from 'class-validator';
 import { ResetPasswordDto } from 'src/entities/dtos/auth/reset-password.dto';
+import { UserEmailDto } from 'src/entities/dtos/user/user-email.dto';
 @Injectable()
 export class AuthService {
   private userPool: CognitoUserPool;
@@ -63,6 +61,7 @@ export class AuthService {
 
     async verifyEmail(confirmationCodeDto: ConfirmationCodeDto) {
       const { code, email } = confirmationCodeDto;
+      console.log(code, email);
       const userData = {
         Username: email,
         Pool: this.userPool,
@@ -80,16 +79,17 @@ export class AuthService {
       .then(() => this.userService.verifyUserEmail(email));      
     }
 
-    async resendConfirmationCode(email: string) {
+    async resendConfirmationCode(dto: UserEmailDto) {
+      const { email } = dto;
       const userData = {
         Username: email,
         Pool: this.userPool,
       };
-
       var cognitoUser = new CognitoUser(userData);
       return new Promise((resolve, reject) => {
         return cognitoUser.resendConfirmationCode((err, result) => {
           if (!result) {
+            console.log(err)
             reject(err);
           } else {
             resolve(result.user);
@@ -157,7 +157,8 @@ export class AuthService {
             resolve(result);
           },
           onFailure: err => {
-            reject(err);
+            console.log(err);
+            reject(err.message);
           },
         });
       });
