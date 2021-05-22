@@ -44,6 +44,19 @@ export class UserService {
     });
   }
 
+  async isUserEmailverified(email: string) {
+      return this.userRepository.findOne({ email })
+      .then(
+        it => {
+          if (!it) {
+            throw new HttpException(ErrorConstants.USER_NOT_FOUND, HttpStatus.NOT_FOUND);
+          } else {
+            return it.isEmailVerified;
+          }
+        }
+      );
+  }
+
   async updatePassword(dto: ResetPasswordDto) {
     const { email, password } = dto;
     var user = await this.findOneByEmail(email);

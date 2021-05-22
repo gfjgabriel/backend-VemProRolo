@@ -1,6 +1,6 @@
 
 import { AuthConfig } from '../auth/auth.config';
-import { HttpException, Inject, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { UserService } from './user.service';
 import {
   AuthenticationDetails,
@@ -13,6 +13,7 @@ import { ConfirmationCodeDto } from 'src/entities/dtos/auth/confirmation-code.dt
 import { RegisterDto } from 'src/entities/dtos/auth/register.dto';
 import { ResetPasswordDto } from 'src/entities/dtos/auth/reset-password.dto';
 import { UserEmailDto } from 'src/entities/dtos/user/user-email.dto';
+import { ErrorConstants } from 'src/utils/error-constants.enum';
 @Injectable()
 export class AuthService {
   private userPool: CognitoUserPool;
@@ -98,7 +99,15 @@ export class AuthService {
       });      
     }
 
-    async sendForgotPasswordEmail(email: string) {
+    async sendForgotPasswordEmail(dto: UserEmailDto) {
+      const { email } = dto;
+      let isEmailVerified = await this.userService.isUserEmailverified(email);
+      console.log(isEmailVerified);
+      if (!isEmailVerified) {
+        console.log("cheguei no erro")
+        throw new HttpException(ErrorConstants.USER_NOT_FOUND, HttpStatus.UNAUTHORIZED);
+      }
+      console.log(email)
       const userData = {
         Username: email,
         Pool: this.userPool,
@@ -137,9 +146,12 @@ export class AuthService {
       .then(() => this.userService.updatePassword(dto));
     }
 
-    authenticateUser(user: AuthDto) {
+    async authenticateUser(user: AuthDto) {
       const { email, password } = user;
-      
+      let isEmailVerified = await this.userService.isUserEmailverified(email);
+      if (!isEmailVerified) {
+        throw new HttpException(ErrorConstants.USER_NOT_FOUND, HttpStatus.UNAUTHORIZED);
+      }
       const authenticationDetails = new AuthenticationDetails({
         Username: email,
         Password: password,

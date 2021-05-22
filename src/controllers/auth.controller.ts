@@ -3,6 +3,7 @@ import { AuthGuard } from "@nestjs/passport";
 import { AuthDto } from "src/entities/dtos/auth/auth.dto";
 import { ConfirmationCodeDto } from "src/entities/dtos/auth/confirmation-code.dto";
 import { RegisterDto } from "src/entities/dtos/auth/register.dto";
+import { ResetPasswordDto } from "src/entities/dtos/auth/reset-password.dto";
 import { UserEmailDto } from "src/entities/dtos/user/user-email.dto";
 import { AuthService } from "src/services/auth.service";
 
@@ -33,11 +34,7 @@ export class AuthController {
 
     @Post('login')
     async login(@Body() authenticateRequest: AuthDto) {
-        try {
-            return await this.authService.authenticateUser(authenticateRequest);
-        } catch (e) {
-            throw new BadRequestException(e.message);
-        }
+        return await this.authService.authenticateUser(authenticateRequest);
     }
 
     @Post('verify-email')
@@ -53,6 +50,20 @@ export class AuthController {
     async resendConfirmationCode(@Body() dto: UserEmailDto) {
         try {
             return await this.authService.resendConfirmationCode(dto);
+        } catch (e) {
+            throw new BadRequestException(e.message);
+        }
+    }
+
+    @Post('password-recovery')
+    async sendForgotPasswordEmail(@Body() dto: UserEmailDto) {
+        return await this.authService.sendForgotPasswordEmail(dto);
+    }
+
+    @Post('reset-password')
+    async resetPasswordWithCodeVerification(@Body() dto: ResetPasswordDto) {
+        try {
+            return await this.authService.resetPasswordWithCodeVerification(dto);
         } catch (e) {
             throw new BadRequestException(e.message);
         }
