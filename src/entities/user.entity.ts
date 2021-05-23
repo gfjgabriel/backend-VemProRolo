@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn, BaseEntity, CreateDateColumn, UpdateDateColumn, IsNull, BeforeInsert } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, BaseEntity, CreateDateColumn, UpdateDateColumn, IsNull, BeforeInsert, OneToMany } from 'typeorm';
+import { Vehicle } from './vehicle.entity';
 
 @Entity()
 export class User extends BaseEntity {
@@ -26,6 +27,9 @@ export class User extends BaseEntity {
 
   @Column({ name: 'is_email_verified', default: false, nullable: false })
   isEmailVerified: Boolean;
+
+  @OneToMany(() => Vehicle, vehicle => vehicle.user)
+  vehicles: Vehicle[];
 
   @BeforeInsert()
   emailToLowerCase() {
