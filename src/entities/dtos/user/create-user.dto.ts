@@ -1,15 +1,17 @@
 import { Exclude,  } from "class-transformer";
 import { IsEmail, IsNotEmpty } from "class-validator";
 
-export class UserDto {
+
+export class UserCreateDto {
     
+    @IsNotEmpty()
     name: string;
     
+    @IsEmail()
+    @IsNotEmpty()
     email: string;
 
-    @Exclude()
+    @IsNotEmpty()
     password: string;
-    
-    phone: string;
     
 }

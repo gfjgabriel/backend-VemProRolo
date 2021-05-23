@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn, BaseEntity, CreateDateColumn, UpdateDateColumn, IsNull } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, BaseEntity, CreateDateColumn, UpdateDateColumn, IsNull, BeforeInsert, OneToMany } from 'typeorm';
+import { Vehicle } from './vehicle.entity';
 
 @Entity()
 export class User extends BaseEntity {
@@ -23,5 +24,16 @@ export class User extends BaseEntity {
 
   @UpdateDateColumn({ name: 'updated_date', nullable: false })
   updatedDate: Date;
+
+  @Column({ name: 'is_email_verified', default: false, nullable: false })
+  isEmailVerified: Boolean;
+
+  @OneToMany(() => Vehicle, vehicle => vehicle.user)
+  vehicles: Vehicle[];
+
+  @BeforeInsert()
+  emailToLowerCase() {
+    this.email = this.email.toLowerCase();
+  }
 
 }

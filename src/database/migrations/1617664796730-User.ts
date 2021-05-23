@@ -38,6 +38,12 @@ export default class User1617664796730 implements MigrationInterface {
                 isNullable: true,
             },
             {
+                name: 'is_email_verified',
+                type: 'boolean',
+                isNullable: true,
+                default: false
+            },
+            {
                 name: 'created_date',
                 type: 'timestamp',
                 isNullable: false,
