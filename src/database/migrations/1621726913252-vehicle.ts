@@ -48,8 +48,7 @@ export class vehicle1621726913252 implements MigrationInterface {
             },
             {
                 name: 'details',
-                type: 'varchar',
-                length: '2000',
+                type: 'text'
             },
             {
                 name: 'user_id',

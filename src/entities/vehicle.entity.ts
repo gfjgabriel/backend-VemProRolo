@@ -1,5 +1,6 @@
 import { Category } from "aws-sdk/clients/signer";
-import { BaseEntity, Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { BaseEntity, Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Image } from "./image.entity";
 import { FuelType } from "./types/fuel.type";
 import { TransmissionType } from "./types/transmission.type";
 import { User } from "./user.entity";
@@ -43,5 +44,8 @@ export class Vehicle extends BaseEntity {
     @ManyToOne(() => User, user => user.vehicles, { nullable: false })
     @JoinColumn({name : 'user_id', referencedColumnName: 'id'})
     user: User;
+
+    @OneToMany(() => Image, image => image.vehicle)
+    images: Image[];
 
 }

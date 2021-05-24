@@ -40,7 +40,7 @@ export default class User1617664796730 implements MigrationInterface {
             {
                 name: 'is_email_verified',
                 type: 'boolean',
-                isNullable: true,
+                isNullable: false,
                 default: false
             },
             {
