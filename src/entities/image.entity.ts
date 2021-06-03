@@ -7,7 +7,7 @@ export class Image extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column({name: 'key', length: 255})
+    @Column({name: 'key', length: 255, nullable: true})
     key: string;
 
     @Column({name: 'file_name', length: 255})
@@ -16,7 +16,7 @@ export class Image extends BaseEntity {
     @Column({name: 'file_content_type', length: 255})
     fileContentType: string;
 
-    @Column({name: 's3_name', length: 255})
+    @Column({name: 's3_name', length: 255, nullable: true})
     s3Name: string;
 
     @Column({name: 'processed', default: false})

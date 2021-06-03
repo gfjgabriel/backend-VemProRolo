@@ -31,7 +31,7 @@ export class VehicleService {
         id
       }
     }).catch(
-      () => {throw new HttpException(ErrorConstants.USER_NOT_FOUND, HttpStatus.NOT_FOUND);}
+      () => {throw new HttpException(ErrorConstants.VEHICLE_NOT_FOUND, HttpStatus.NOT_FOUND);}
     );
     return this.repository.save(dto);
   }

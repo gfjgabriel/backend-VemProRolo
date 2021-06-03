@@ -22,9 +22,20 @@ export class vehicle1621726913252 implements MigrationInterface {
                 type: 'int',
             },
             {
+                name: 'doors_number',
+                type: 'int',
+                isNullable: true
+            },
+            {
+                name: 'kilometers',
+                type: 'int',
+                isNullable: true
+            },
+            {
                 name: 'color',
                 type: 'varchar',
                 length: '255',
+                isNullable: true
             },
             {
                 name: 'model',
@@ -35,20 +46,24 @@ export class vehicle1621726913252 implements MigrationInterface {
                 name: 'fuel_type',
                 type: 'varchar',
                 length: '255',
+                isNullable: true
             },
             {
                 name: 'transmission_type',
                 type: 'varchar',
                 length: '255',
+                isNullable: true
             },
             {
                 name: 'category',
                 type: 'varchar',
                 length: '255',
+                isNullable: true
             },
             {
                 name: 'details',
-                type: 'text'
+                type: 'text',
+                isNullable: true
             },
             {
                 name: 'user_id',
