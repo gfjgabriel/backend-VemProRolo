@@ -7,6 +7,8 @@ import { AuthModule } from './modules/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import { AuthorizerGuard } from './auth/guards/cognito.guard';
 import { CognitoService } from './services/cognito.service';
+import { VehicleModule } from './modules/vehicle.module';
+import { ImageModule } from './modules/image.module';
 
 let envFilePath = '.env.development';
 console.log(`Running in ${process.env.ENVIRONMENT}`)
@@ -30,7 +32,8 @@ if (process.env.ENVIRONMENT === 'PRODUCTION') {
       migrationsRun: true
     }),
   UserModule,
-  AuthModule
+  AuthModule,
+  VehicleModule
 ],
   controllers: [AppController],
   providers: [AppService],

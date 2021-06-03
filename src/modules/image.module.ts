@@ -7,7 +7,7 @@ import { ImageController } from 'src/controllers/image.controller';
 import { VehicleModule } from './vehicle.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Image]), VehicleModule],
+  imports: [TypeOrmModule.forFeature([Image])],
   providers: [ImageService, ImageFacade],
   controllers: [ImageController],
   exports: [TypeOrmModule.forFeature([Image]), ImageService]

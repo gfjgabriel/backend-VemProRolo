@@ -45,7 +45,8 @@ export class Vehicle extends BaseEntity {
     @JoinColumn({name : 'user_id', referencedColumnName: 'id'})
     user: User;
 
-    @OneToMany(() => Image, image => image.vehicle)
+    @OneToMany(() => Image, image => image.vehicle, { cascade: true })
     images: Image[];
+
 
 }

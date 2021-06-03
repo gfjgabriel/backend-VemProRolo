@@ -16,6 +16,7 @@ export class image1621814430765 implements MigrationInterface {
                 name: 'key',
                 type: 'varchar',
                 length: '255',
+                isNullable: true
             },
             {
                 name: 'file_name',
@@ -31,6 +32,7 @@ export class image1621814430765 implements MigrationInterface {
                 name: 's3_name',
                 type: 'varchar',
                 length: '255',
+                isNullable: true
             },
             {
                 name: 'file',
