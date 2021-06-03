@@ -1,5 +1,6 @@
 import { Category } from "aws-sdk/clients/signer";
-import { BaseEntity, Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { BaseEntity, Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Image } from "./image.entity";
 import { FuelType } from "./types/fuel.type";
 import { TransmissionType } from "./types/transmission.type";
 import { User } from "./user.entity";
@@ -16,22 +17,28 @@ export class Vehicle extends BaseEntity {
     @Column({name: 'year'})
     year: number;
 
-    @Column({name: 'color', length: 255})
+    @Column({name: 'color', length: 255, nullable: true})
     color: string;
 
     @Column({name: 'model', length: 255})
     model: string;
 
-    @Column({name: 'fuel_type', length: 255})
+    @Column({name: 'doors_number', nullable: true})
+    doorsNumber: number;
+
+    @Column({name: 'kilometers', nullable: true})
+    kilometers: number;
+
+    @Column({name: 'fuel_type', length: 255, nullable: true})
     fuelType: FuelType;
 
-    @Column({name: 'transmission_type', length: 255})
+    @Column({name: 'transmission_type', length: 255, nullable: true})
     transmissionType: TransmissionType; 
 
-    @Column({name: 'category', length: 255})
+    @Column({name: 'category', length: 255, nullable: true})
     category: Category; 
 
-    @Column({name: 'details', length: 2000})
+    @Column({name: 'details', length: 2000, nullable: true})
     details: string;
 
     @CreateDateColumn({ name: 'created_date', nullable: false })
@@ -43,5 +50,9 @@ export class Vehicle extends BaseEntity {
     @ManyToOne(() => User, user => user.vehicles, { nullable: false })
     @JoinColumn({name : 'user_id', referencedColumnName: 'id'})
     user: User;
+
+    @OneToMany(() => Image, image => image.vehicle, { cascade: true })
+    images: Image[];
+
 
 }
