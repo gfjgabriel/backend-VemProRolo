@@ -17,14 +17,14 @@ export class VehicleUpdateDto {
 
     model: string;
 
-    @IsEnum(FuelType)
-    fuelType: FuelType;
+    //@IsEnum(FuelType)
+    fuelType: string;
 
-    @IsEnum(TransmissionType)
-    transmissionType: TransmissionType; 
+    //@IsEnum(TransmissionType)
+    transmissionType: string; 
 
-    @IsEnum(Category)
-    category: Category;
+    //@IsEnum(Category)
+    category: string;
 
     details: string;
 
