@@ -30,13 +30,13 @@ export class Vehicle extends BaseEntity {
     kilometers: number;
 
     @Column({name: 'fuel_type', length: 255, nullable: true})
-    fuelType: FuelType;
+    fuelType: string;
 
     @Column({name: 'transmission_type', length: 255, nullable: true})
-    transmissionType: TransmissionType; 
+    transmissionType: string; 
 
     @Column({name: 'category', length: 255, nullable: true})
-    category: Category; 
+    category: string; 
 
     @Column({name: 'details', length: 2000, nullable: true})
     details: string;

@@ -1,6 +1,7 @@
 import {HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { plainToClass } from 'class-transformer';
+import { classToPlain, plainToClass } from 'class-transformer';
+import { UserDto } from 'src/entities/dtos/user/user.dto';
 import { VehicleCreateDto } from 'src/entities/dtos/vehicle/vehicle-create.dto';
 import { VehicleUpdateDto } from 'src/entities/dtos/vehicle/vehicle-update.dto';
 import { Vehicle } from 'src/entities/vehicle.entity';
@@ -19,9 +20,9 @@ export class VehicleService {
 
   async createVehicle(dto: VehicleCreateDto) {
     let currentUser = await this.userService.getCurrentUser();
-    let vehicle = plainToClass(Vehicle, dto);
-    vehicle.user = currentUser;
-    return this.repository.save(vehicle);
+    let user = plainToClass(UserDto, currentUser);
+    dto.user = user;
+    return this.repository.save(dto);
   }
 
   async updateVehicle(dto: VehicleUpdateDto) {
