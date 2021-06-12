@@ -5,6 +5,7 @@ import { isEmail } from 'class-validator';
 import { AuthDto } from 'src/entities/dtos/auth/auth.dto';
 import { ResetPasswordDto } from 'src/entities/dtos/auth/reset-password.dto';
 import { UserCreateDto } from 'src/entities/dtos/user/create-user.dto';
+import { UserUpdateDto } from 'src/entities/dtos/user/update-user.dto';
 import { ErrorConstants } from 'src/utils/error-constants.enum';
 import { Repository } from 'typeorm';
 import { User } from '../entities/user.entity';
@@ -25,6 +26,24 @@ export class UserService {
     console.log(userCreateDto);
     userCreateDto.password = bcrypt.hashSync(userCreateDto.password, parseInt(process.env.SALT_ROUNDS, 10));
     return this.userRepository.save(userCreateDto);
+  }
+
+  async updateUser(dto: UserUpdateDto): Promise<User> {
+    console.log(dto);
+    const { id } = dto;
+    return await this.userRepository.findOne({
+      where: {
+        id
+      }
+    })
+    .then(user => {
+      user.name = dto.name;
+      user.phone = dto.phone;
+      return this.userRepository.save(user);
+    })
+    .catch(
+      () => {throw new HttpException(ErrorConstants.USER_NOT_FOUND, HttpStatus.NOT_FOUND);}
+    );
   }
 
   verifyUserEmail(email: string) {

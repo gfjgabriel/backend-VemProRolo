@@ -3,6 +3,7 @@ import { GetUserResponse } from "aws-sdk/clients/cognitoidentityserviceprovider"
 import { plainToClass } from "class-transformer";
 import { AuthDto } from "src/entities/dtos/auth/auth.dto";
 import { UserCreateDto } from "src/entities/dtos/user/create-user.dto";
+import { UserUpdateDto } from "src/entities/dtos/user/update-user.dto";
 import { UserDto } from "src/entities/dtos/user/user.dto";
 import { UserService } from "src/services/user.service";
 
@@ -22,6 +23,11 @@ export class UserFacade {
 
     create(dto: UserCreateDto): Promise<UserDto> {
         return this.userService.createUser(dto)
+        .then(it => plainToClass(UserDto, it));
+    }
+
+    update(dto: UserUpdateDto): Promise<UserDto> {
+        return this.userService.updateUser(dto)
         .then(it => plainToClass(UserDto, it));
     }
 
