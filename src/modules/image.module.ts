@@ -5,9 +5,10 @@ import { ImageService } from 'src/services/image.service';
 import { ImageFacade } from 'src/facade/image.facade';
 import { ImageController } from 'src/controllers/image.controller';
 import { VehicleModule } from './vehicle.module';
+import { UserModule } from './user.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Image])],
+  imports: [TypeOrmModule.forFeature([Image]), UserModule],
   providers: [ImageService, ImageFacade],
   controllers: [ImageController],
   exports: [TypeOrmModule.forFeature([Image]), ImageService]

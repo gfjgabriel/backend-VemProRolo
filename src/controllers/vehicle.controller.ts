@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Put, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { AuthorizerGuard } from '../auth/guards/cognito.guard'
 import { VehicleFacade } from 'src/facade/vehicle.facade';
 import { VehicleDto } from 'src/entities/dtos/vehicle/vehicle.dto';
@@ -32,6 +32,16 @@ export class VehicleController {
   @Get()
   getAll() {
     return this.facade.getAll();
+  }
+
+  @Get(':id')
+  getOne(@Param() id: number): Promise<VehicleDto> {
+    return this.facade.findOne(id);
+  }
+
+  @Delete(':id')
+  delete(@Param() id: number): void {
+    this.facade.delete(id);
   }
 
 }
