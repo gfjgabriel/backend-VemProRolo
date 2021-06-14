@@ -5,9 +5,10 @@ import { VehicleFacade } from 'src/facade/vehicle.facade';
 import { VehicleController } from 'src/controllers/vehicle.controller';
 import { Vehicle } from 'src/entities/vehicle.entity';
 import { UserModule } from './user.module';
+import { ImageModule } from './image.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Vehicle]), UserModule],
+  imports: [TypeOrmModule.forFeature([Vehicle]), UserModule, ImageModule],
   providers: [VehicleService, VehicleFacade],
   controllers: [VehicleController],
   exports: [TypeOrmModule.forFeature([Vehicle]), VehicleService]

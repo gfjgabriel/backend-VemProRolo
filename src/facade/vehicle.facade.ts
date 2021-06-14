@@ -49,8 +49,18 @@ export class VehicleFacade {
             })
         );
     }
+
     getAll() {
         return this.vehicleService.getAll();
+    }
+
+    findOne(id: number): Promise<VehicleDto> {
+        return this.vehicleService.findOne(id)
+        .then(it => plainToClass(VehicleDto, it));
+    }
+
+    delete(id: number): void {
+        this.vehicleService.delete(id);
     }
     
 }

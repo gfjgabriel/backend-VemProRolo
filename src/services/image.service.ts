@@ -8,7 +8,17 @@ export class ImageService {
   
   constructor(
     @InjectRepository(Image)
-    private imageRepository: Repository<Image>
+    private repository: Repository<Image>
   ) {}
+
+  async findAllByVehicleId(vehicleId: string) {
+    return (await this.repository.find({
+      where: {
+        vehicle: {
+          id: vehicleId
+        }
+      },
+      relations: ['vehicle']}));
+  }
 
 }

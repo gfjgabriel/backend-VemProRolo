@@ -29,5 +29,9 @@ export class VehicleUpdateDto {
     details: string;
 
     images: ImageCreateDto[];
+
+    doorsNumber: number;
+    
+    kilometers: number;
     
 }

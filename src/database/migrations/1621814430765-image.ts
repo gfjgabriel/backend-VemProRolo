@@ -55,6 +55,7 @@ export class image1621814430765 implements MigrationInterface {
         columnNames: ["vehicle_id"],
         referencedColumnNames: ["id"],
         referencedTableName: "vehicle",
+        onDelete: 'CASCADE'
     });
 
     public async up(queryRunner: QueryRunner): Promise<void> {
