@@ -81,13 +81,15 @@ export class vehicle1621726913252 implements MigrationInterface {
                 isNullable: false,
                 default: 'now()'
             }
-        ]
+        ],
+        
     });
 
     foreignKey = new TableForeignKey({
         columnNames: ["user_id"],
         referencedColumnNames: ["id"],
         referencedTableName: "user",
+        onDelete: 'CASCADE'
     });
 
     public async up(queryRunner: QueryRunner): Promise<void> {
