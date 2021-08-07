@@ -4,6 +4,7 @@ import { Image } from "./image.entity";
 import { FuelType } from "./types/fuel.type";
 import { TransmissionType } from "./types/transmission.type";
 import { User } from "./user.entity";
+import {Like} from "./like.entity";
 
 @Entity()
 export class Vehicle extends BaseEntity {
@@ -53,6 +54,9 @@ export class Vehicle extends BaseEntity {
 
     @OneToMany(() => Image, image => image.vehicle, { cascade: true, onDelete: 'CASCADE' })
     images: Image[];
+
+    @OneToMany(() => Like, like => like.vehicle, { cascade: true, onDelete: 'CASCADE' })
+    likes: Like[];
 
 
 }
