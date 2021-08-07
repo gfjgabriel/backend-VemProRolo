@@ -45,6 +45,28 @@ $ npm run start:dev
 $ npm run start:prod
 ```
 
+## Docker
+
+```bash
+# Startup
+$ docker-compose -f .\src\database\docker\mysql.yml up -d
+
+# Stop
+$ docker-compose -f .\src\database\docker\mysql.yml stop
+
+# Delete (all data including)
+$ docker-compose -f .\src\database\docker\mysql.yml down
+```
+
+## Migrations
+
+```bash
+Configured to run when Application starts
+
+# Create
+$ yarn typeorm migration:create -n migration-name
+```
+
 ## Test
 
 ```bash
