@@ -80,7 +80,7 @@ export class VehicleService {
         where: {
           id: vehicleId
         },
-        relations: ['images']}));
+        relations: ['images', 'user']}));
   }
 
   delete(vehicleId: number): void {

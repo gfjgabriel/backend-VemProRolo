@@ -57,7 +57,7 @@ export class like1628355038244 implements MigrationInterface {
     userForeignKey = new TableForeignKey({
         columnNames: ["user_id"],
         referencedColumnNames: ["id"],
-        referencedTableName: "vehicle",
+        referencedTableName: "user",
         onDelete: 'CASCADE'
     });
 

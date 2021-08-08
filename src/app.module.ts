@@ -5,10 +5,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './modules/user.module';
 import { AuthModule } from './modules/auth.module';
 import { ConfigModule } from '@nestjs/config';
-import { AuthorizerGuard } from './auth/guards/cognito.guard';
-import { CognitoService } from './services/cognito.service';
 import { VehicleModule } from './modules/vehicle.module';
-import { ImageModule } from './modules/image.module';
+import {LikeModule} from "./modules/like.module";
 
 let envFilePath = '.env.development';
 console.log(`Running in ${process.env.ENVIRONMENT}`)
@@ -31,10 +29,11 @@ if (process.env.ENVIRONMENT === 'PRODUCTION') {
       migrations: ["dist/database/migrations/*{.ts,.js}"],
       migrationsRun: true
     }),
-  UserModule,
-  AuthModule,
-  VehicleModule
-],
+    UserModule,
+    AuthModule,
+    VehicleModule,
+    LikeModule
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
