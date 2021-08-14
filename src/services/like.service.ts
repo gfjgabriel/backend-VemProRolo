@@ -88,4 +88,8 @@ export class LikeService {
         });
   }
 
+  async deleteLike(like_id: number) {
+    await this.repository.delete({like_id})
+  }
+
 }

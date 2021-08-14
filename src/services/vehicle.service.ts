@@ -10,6 +10,7 @@ import { ErrorConstants } from 'src/utils/error-constants.enum';
 import { Not, Repository } from 'typeorm';
 import { ImageService } from './image.service';
 import { UserService } from './user.service';
+import {MatchService} from "./match.service";
 
 @Injectable()
 export class VehicleService {
@@ -17,8 +18,7 @@ export class VehicleService {
   constructor(
     @InjectRepository(Vehicle)
     private repository: Repository<Vehicle>,
-    private readonly userService: UserService,
-    private readonly imageService: ImageService
+    private readonly userService: UserService
   ) {}
 
   async createVehicle(dto: VehicleCreateDto) {
@@ -54,21 +54,22 @@ export class VehicleService {
   async getAllVehiclesCurrentUser() {
     let user = await this.userService.getCurrentUser();
     let userId = user.id;
-    return (await this.repository.find({
+    return await this.repository.find({
       where: {user: {
         id: userId
-      }}, 
-      relations: ['images']}));
+      }},
+      relations: ['images']});
   }
 
   async getAllVehiclesToLike() {
     let user = await this.userService.getCurrentUser();
     let userId = user.id;
-    return (await this.repository.find({
-      where: {user: {
-        id: Not(userId)
-      }}, 
-      relations: ['images']}));
+    return this.repository.createQueryBuilder("vehicle")
+        .leftJoinAndSelect("vehicle.likes", "like")
+        .leftJoinAndSelect("vehicle.user", "vehicleUser")
+        .leftJoinAndSelect("like.user", "likeUser")
+        .where("vehicleUser.id != :currentUserId and (likeUser.id != :currentUserId or likeUser.id is null)", {currentUserId: userId})
+        .getMany();
   }
 
   getAll() {

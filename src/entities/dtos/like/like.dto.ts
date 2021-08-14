@@ -13,6 +13,5 @@ export class LikeDto {
     user: UserDto;
 
     vehicle: VehicleDto;
-
     
 }

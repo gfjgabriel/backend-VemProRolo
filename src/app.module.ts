@@ -7,6 +7,7 @@ import { AuthModule } from './modules/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import { VehicleModule } from './modules/vehicle.module';
 import {LikeModule} from "./modules/like.module";
+import {MatchModule} from "./modules/match.module";
 
 let envFilePath = '.env.development';
 console.log(`Running in ${process.env.ENVIRONMENT}`)
@@ -27,12 +28,14 @@ if (process.env.ENVIRONMENT === 'PRODUCTION') {
       database: process.env.MYSQL_DB_NAME,
       entities: ["dist/entities/*{.ts,.js}"],
       migrations: ["dist/database/migrations/*{.ts,.js}"],
-      migrationsRun: true
+      migrationsRun: true,
+      logging: true
     }),
     UserModule,
     AuthModule,
     VehicleModule,
-    LikeModule
+    LikeModule,
+    MatchModule
   ],
   controllers: [AppController],
   providers: [AppService],

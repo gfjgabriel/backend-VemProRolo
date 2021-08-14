@@ -35,7 +35,7 @@ export class VehicleController {
   }
 
   @Get(':id')
-  getOne(@Param() id: number): Promise<VehicleDto> {
+  getOne(@Param('id') id: number): Promise<VehicleDto> {
     return this.facade.findOne(id);
   }
 

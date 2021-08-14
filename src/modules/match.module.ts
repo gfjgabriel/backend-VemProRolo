@@ -13,11 +13,14 @@ import {LikeController} from "../controllers/like.controller";
 import {VehicleModule} from "./vehicle.module";
 import {Match} from "../entities/match.entity";
 import {MatchService} from "../services/match.service";
+import {MatchFacade} from "../facade/match.facade";
+import {MatchController} from "../controllers/match.controller";
+import {LikeModule} from "./like.module";
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Match])],
-  providers: [MatchService],
-  controllers: [],
+  imports: [TypeOrmModule.forFeature([Match, Like]), UserModule],
+  providers: [MatchService, MatchFacade],
+  controllers: [MatchController],
   exports: [TypeOrmModule.forFeature([Match]), MatchService]
 })
 export class MatchModule {}
