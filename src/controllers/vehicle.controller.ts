@@ -26,7 +26,9 @@ export class VehicleController {
 
   @Get('to-like')
   getAllVehiclesToLike() {
-    return this.facade.getAllVehiclesToLike();
+    let t = this.facade.getAllVehiclesToLike();
+    console.log("VEICULOS: " + t);
+    return t;
   }
 
   @Get()
