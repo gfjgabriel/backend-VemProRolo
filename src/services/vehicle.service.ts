@@ -7,9 +7,10 @@ import { VehicleUpdateDto } from 'src/entities/dtos/vehicle/vehicle-update.dto';
 import { Image } from 'src/entities/image.entity';
 import { Vehicle } from 'src/entities/vehicle.entity';
 import { ErrorConstants } from 'src/utils/error-constants.enum';
-import { Not, Repository } from 'typeorm';
+import {getManager, Not, Repository} from 'typeorm';
 import { ImageService } from './image.service';
 import { UserService } from './user.service';
+import {MatchService} from "./match.service";
 
 @Injectable()
 export class VehicleService {
@@ -17,8 +18,7 @@ export class VehicleService {
   constructor(
     @InjectRepository(Vehicle)
     private repository: Repository<Vehicle>,
-    private readonly userService: UserService,
-    private readonly imageService: ImageService
+    private readonly userService: UserService
   ) {}
 
   async createVehicle(dto: VehicleCreateDto) {
@@ -54,21 +54,38 @@ export class VehicleService {
   async getAllVehiclesCurrentUser() {
     let user = await this.userService.getCurrentUser();
     let userId = user.id;
-    return (await this.repository.find({
+    return await this.repository.find({
       where: {user: {
         id: userId
-      }}, 
-      relations: ['images']}));
+      }},
+      relations: ['images']});
   }
 
-  async getAllVehiclesToLike() {
+  async getAllVehiclesToLike(): Promise<Vehicle[]> {
     let user = await this.userService.getCurrentUser();
     let userId = user.id;
-    return (await this.repository.find({
-      where: {user: {
-        id: Not(userId)
-      }}, 
-      relations: ['images']}));
+
+    let rawIds = await this.repository.createQueryBuilder("vehicle")
+        .select('vehicle.id', 'id')
+        .leftJoin("vehicle.likes", "like")
+        .leftJoin("like.user", "likeUser")
+        .where("likeUser.id = :currentUserId", {currentUserId: userId})
+        .getRawMany();
+
+    let ids = rawIds.map(it => it.id);
+
+    if (ids.length === 0) {
+      ids.push(0);
+    }
+
+    let vehicles =  await this.repository.createQueryBuilder("vehicle")
+        .leftJoinAndSelect("vehicle.likes", "like")
+        .leftJoinAndSelect("vehicle.user", "vehicleUser")
+        .leftJoinAndSelect("like.user", "likeUser")
+        .leftJoinAndSelect("vehicle.images", "images")
+        .where("vehicleUser.id != :currentUserId and vehicle.id NOT IN (:ids)", {currentUserId: userId, ids: ids})
+        .getMany();
+    return vehicles;
   }
 
   getAll() {
@@ -80,7 +97,7 @@ export class VehicleService {
         where: {
           id: vehicleId
         },
-        relations: ['images']}));
+        relations: ['images', 'user']}));
   }
 
   delete(vehicleId: number): void {

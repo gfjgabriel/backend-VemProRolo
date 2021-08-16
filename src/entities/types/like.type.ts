@@ -1,0 +1,5 @@
+export enum LikeType {
+    INTERESTED = 'INTERESTED',
+    SUPER_LIKE = 'SUPER_LIKE',
+    NOT_INTERESTED = 'NOT_INTERESTED'
+}
