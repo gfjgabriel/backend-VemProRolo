@@ -88,6 +88,14 @@ export class VehicleService {
     return vehicles;
   }
 
+  async getAllBrands() {
+    
+  }
+
+  async getAllModels(brandId: number) {
+    
+  }
+
   getAll() {
     return this.repository.find();
   }

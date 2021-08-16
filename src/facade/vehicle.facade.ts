@@ -50,6 +50,14 @@ export class VehicleFacade {
         );
     }
 
+    getAllBrands() {
+        return this.vehicleService.getAllBrands();
+    }
+
+    getAllModels(brandId: number) {
+        return this.vehicleService.getAllModels(brandId);
+    }
+
     getAll() {
         return this.vehicleService.getAll();
     }
