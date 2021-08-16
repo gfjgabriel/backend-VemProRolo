@@ -4,6 +4,7 @@ import { VehicleFacade } from 'src/facade/vehicle.facade';
 import { VehicleDto } from 'src/entities/dtos/vehicle/vehicle.dto';
 import { VehicleUpdateDto } from 'src/entities/dtos/vehicle/vehicle-update.dto';
 import { VehicleCreateDto } from 'src/entities/dtos/vehicle/vehicle-create.dto';
+
 @Controller('vehicles')
 @UseGuards(AuthorizerGuard)
 export class VehicleController {
@@ -45,5 +46,14 @@ export class VehicleController {
   delete(@Param() id: number): void {
     this.facade.delete(id);
   }
+  
+  @Get('allBrands')
+  getAllBrands(){
+    return this.facade.getAllBrands();
+  }
 
+  @Get('allModels')
+  getAllModels(@Param() brandId: number){
+    return this.facade.getAllModels(brandId);
+  }
 }

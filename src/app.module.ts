@@ -6,6 +6,9 @@ import { UserModule } from './modules/user.module';
 import { AuthModule } from './modules/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import { VehicleModule } from './modules/vehicle.module';
+import { ImageModule } from './modules/image.module';
+import { BrandModule } from './modules/brand.modules';
+import { ModelModule } from './modules/model.module';
 import {LikeModule} from "./modules/like.module";
 import {MatchModule} from "./modules/match.module";
 
@@ -31,12 +34,14 @@ if (process.env.ENVIRONMENT === 'PRODUCTION') {
       migrationsRun: true,
       logging: true
     }),
-    UserModule,
-    AuthModule,
-    VehicleModule,
-    LikeModule,
-    MatchModule
-  ],
+  UserModule,
+  AuthModule,
+  VehicleModule,
+  BrandModule,
+  ModelModule,
+  LikeModule,
+  MatchModule
+],
   controllers: [AppController],
   providers: [AppService],
 })
