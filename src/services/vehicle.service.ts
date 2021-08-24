@@ -11,6 +11,7 @@ import {getManager, Not, Repository} from 'typeorm';
 import { ImageService } from './image.service';
 import { UserService } from './user.service';
 import {MatchService} from "./match.service";
+import { Model } from 'src/entities/model.entity';
 
 @Injectable()
 export class VehicleService {
@@ -33,8 +34,7 @@ export class VehicleService {
     return await this.repository.findOne(id)
     .then(vehicle => {
       console.log(vehicle.id);
-      vehicle.brand = dto.brand;
-      vehicle.model = dto.model;
+      vehicle.model = plainToClass(Model,dto.model);
       vehicle.year = dto.year;
       vehicle.transmissionType = dto.transmissionType;
       vehicle.color = dto.color;
@@ -61,28 +61,36 @@ export class VehicleService {
       relations: ['images']});
   }
 
-  async getAllVehiclesToLike(): Promise<Vehicle[]> {
+  async getAllVehiclesToLike(brandId: number, modelId:number ): Promise<Vehicle[]> {
+    console.log("PARAMS= "+ brandId +" "+ modelId)
     let user = await this.userService.getCurrentUser();
     let userId = user.id;
-
     let rawIds = await this.repository.createQueryBuilder("vehicle")
         .select('vehicle.id', 'id')
         .leftJoin("vehicle.likes", "like")
         .leftJoin("like.user", "likeUser")
         .where("likeUser.id = :currentUserId", {currentUserId: userId})
         .getRawMany();
-
     let ids = rawIds.map(it => it.id);
-
     if (ids.length === 0) {
       ids.push(0);
     }
-
+    let whereString = "vehicleUser.id != :currentUserId and vehicle.id NOT IN (:ids)"
+    if (modelId != null) {
+      whereString += " AND model.id == " + modelId
+    }
+    if (brandId != null) {
+      whereString += " AND brand.id == " + brandId
+    }
+    console.log("TESTE1") 
+    console.log(whereString)
     let vehicles =  await this.repository.createQueryBuilder("vehicle")
         .leftJoinAndSelect("vehicle.likes", "like")
         .leftJoinAndSelect("vehicle.user", "vehicleUser")
         .leftJoinAndSelect("like.user", "likeUser")
         .leftJoinAndSelect("vehicle.images", "images")
+        .leftJoinAndSelect("vehicle.model","model")
+        .leftJoinAndSelect("model.brand","brand")
         .where("vehicleUser.id != :currentUserId and vehicle.id NOT IN (:ids)", {currentUserId: userId, ids: ids})
         .getMany();
     return vehicles;

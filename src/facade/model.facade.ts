@@ -9,4 +9,7 @@ export class ModelFacade {
         return this.modelService.getAllModels();
     }
 
+    getAllModelsByBrand(brandId: number) {
+        return this.modelService.getAllModelsByBrand(brandId);
+    }
 }

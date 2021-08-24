@@ -26,10 +26,13 @@ export class VehicleController {
   }
 
   @Get('to-like')
-  getAllVehiclesToLike() {
-    let t = this.facade.getAllVehiclesToLike();
+  getAllVehiclesToLike(@Param('brandId') brandId: number, @Param('modelId') modelId: number) {
+    console.log("RECEBIDOS = " + brandId + " " + modelId)
+    let t = this.facade.getAllVehiclesToLike(1, null);
     console.log("VEICULOS: " + t);
     return t;
+
+    
   }
 
   @Get()

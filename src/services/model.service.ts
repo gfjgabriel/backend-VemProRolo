@@ -21,4 +21,14 @@ export class ModelService {
     );
   }
 
+  getAllModelsByBrand(brandId: number) {
+    console.log("TESTE2")
+
+    console.log("service" + brandId)
+    return this.repository.createQueryBuilder("model")
+        .leftJoin("model.brand", "brand")
+        .where("brand.id = :brandId",{brandId})
+        .getMany();
+  }
+  
 }

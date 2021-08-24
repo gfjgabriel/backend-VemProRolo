@@ -10,5 +10,10 @@ export class ModelController {
     return this.facade.getAllModels();
   }
 
+  @Get('allModelsByBrand/:brandId')
+  getAllModelsByBrand(@Param('brandId') brandId: number){
+    console.log("controller" + brandId)
+    return this.facade.getAllModelsByBrand(brandId);
+  }
   
 }
