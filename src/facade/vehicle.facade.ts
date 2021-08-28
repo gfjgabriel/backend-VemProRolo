@@ -1,5 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { plainToClass } from "class-transformer";
+import { ModelDto } from "src/entities/dtos/model/model.dto";
 import { UserDto } from "src/entities/dtos/user/user.dto";
 import { VehicleCreateDto } from "src/entities/dtos/vehicle/vehicle-create.dto";
 import { VehicleUpdateDto } from "src/entities/dtos/vehicle/vehicle-update.dto";
@@ -39,15 +40,26 @@ export class VehicleFacade {
         );
     }
 
-    getAllVehiclesToLike() {
-        return this.vehicleService.getAllVehiclesToLike()
+    getAllVehiclesToLike(brandId: number, modelId:number) {
+        let res = this.vehicleService.getAllVehiclesToLike(brandId,modelId)
+        console.log(res)
+        return res
         .then(it => 
             it.map(item => {
                 var vehicleDto = plainToClass(VehicleDto, item);
                 vehicleDto.user = plainToClass(UserDto, item.user);
+                vehicleDto.model = plainToClass(ModelDto, item.model);
                 return vehicleDto;
             })
         );
+    }
+
+    getAllBrands() {
+        return this.vehicleService.getAllBrands();
+    }
+
+    getAllModels(brandId: number) {
+        return this.vehicleService.getAllModels(brandId);
     }
 
     getAll() {

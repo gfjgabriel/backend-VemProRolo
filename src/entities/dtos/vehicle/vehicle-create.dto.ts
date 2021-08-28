@@ -1,4 +1,5 @@
 import { IsEnum } from "class-validator";
+import { Model } from "src/entities/model.entity";
 import { Category } from "src/entities/types/category.type";
 import { FuelType } from "src/entities/types/fuel.type";
 import { TransmissionType } from "src/entities/types/transmission.type";
@@ -13,7 +14,7 @@ export class VehicleCreateDto {
 
     color: string;
 
-    model: string;
+    model: Model;
 
     //@IsEnum(FuelType)
     fuelType: string;

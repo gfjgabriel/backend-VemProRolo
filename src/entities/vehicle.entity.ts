@@ -3,6 +3,8 @@ import { Image } from "./image.entity";
 import { User } from "./user.entity";
 import {Like} from "./like.entity";
 import {Match} from "./match.entity";
+import { Model } from "./model.entity";
+import { monitorEventLoopDelay } from "node:perf_hooks";
 
 @Entity()
 export class Vehicle extends BaseEntity {
@@ -10,8 +12,6 @@ export class Vehicle extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column({name: 'brand', length: 255})
-    brand: string;
 
     @Column({name: 'year'})
     year: number;
@@ -19,9 +19,10 @@ export class Vehicle extends BaseEntity {
     @Column({name: 'color', length: 255, nullable: true})
     color: string;
 
-    @Column({name: 'model', length: 255})
-    model: string;
-
+    @ManyToOne(() => Model, { nullable: false })
+    @JoinColumn({name : 'model_id', referencedColumnName: 'id'})
+    model: Model;
+    
     @Column({name: 'doors_number', nullable: true})
     doorsNumber: number;
 
