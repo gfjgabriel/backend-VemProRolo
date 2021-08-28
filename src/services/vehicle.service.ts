@@ -58,7 +58,7 @@ export class VehicleService {
       where: {user: {
         id: userId
       }},
-      relations: ['images']});
+      relations: ['images', 'model', 'model.brand']});
   }
 
   async getAllVehiclesToLike(brandId: number, modelId:number ): Promise<Vehicle[]> {
