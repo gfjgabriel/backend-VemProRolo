@@ -1,9 +1,10 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards, Req } from '@nestjs/common';
 import { AuthorizerGuard } from '../auth/guards/cognito.guard'
 import { VehicleFacade } from 'src/facade/vehicle.facade';
 import { VehicleDto } from 'src/entities/dtos/vehicle/vehicle.dto';
 import { VehicleUpdateDto } from 'src/entities/dtos/vehicle/vehicle-update.dto';
 import { VehicleCreateDto } from 'src/entities/dtos/vehicle/vehicle-create.dto';
+import { Query } from '@nestjs/common';
 
 @Controller('vehicles')
 @UseGuards(AuthorizerGuard)
@@ -26,13 +27,9 @@ export class VehicleController {
   }
 
   @Get('to-like')
-  getAllVehiclesToLike(@Param('brandId') brandId: number, @Param('modelId') modelId: number) {
-    console.log("RECEBIDOS = " + brandId + " " + modelId)
-    let t = this.facade.getAllVehiclesToLike(1, null);
-    console.log("VEICULOS: " + t);
+  getAllVehiclesToLike(@Query('modelId') modelId: number, @Query('brandId') brandId: number) {
+    let t = this.facade.getAllVehiclesToLike(brandId, modelId);
     return t;
-
-    
   }
 
   @Get()
