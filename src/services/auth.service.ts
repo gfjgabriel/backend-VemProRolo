@@ -50,12 +50,10 @@ export class AuthService {
     async register(authRegisterRequest: RegisterDto) {
       const { name, email, password } = authRegisterRequest;
       return new Promise(((resolve, reject) => {
-        return this.userPool.signUp(email, password, [new CognitoUserAttribute({ Name: 'name', Value: name })], null, (err, result) => {
-          if (!result) {
-            reject(err);
-          } else {
+        return this.userPool.signUp(email, password, [new CognitoUserAttribute({ Name: 'name', Value: name })], null, (error, result) => {
+
             resolve(result.user);
-          }
+
         });
       })).then(() => this.userService.createUser(authRegisterRequest));
     }
@@ -70,11 +68,7 @@ export class AuthService {
       var cognitoUser = new CognitoUser(userData);
       return new Promise((resolve, reject) => {
         return cognitoUser.confirmRegistration(code, true, (err, result) => {
-          if (!result) {
-            reject(err);
-          } else {
             resolve(result.user);
-          }
         });
       })
       .then(() => this.userService.verifyUserEmail(email));      
