@@ -19,7 +19,8 @@ export class VehicleService {
   constructor(
     @InjectRepository(Vehicle)
     private repository: Repository<Vehicle>,
-    private readonly userService: UserService
+    private readonly userService: UserService,
+    private readonly imageService: ImageService
   ) {}
 
   async createVehicle(dto: VehicleCreateDto) {
@@ -31,7 +32,7 @@ export class VehicleService {
 
   async updateVehicle(dto: VehicleUpdateDto) {
     const { id } = dto;
-    return await this.repository.findOne(id)
+    return await this.findOne(id)
     .then(vehicle => {
       console.log(vehicle.id);
       vehicle.model = plainToClass(Model,dto.model);
@@ -43,7 +44,17 @@ export class VehicleService {
       vehicle.doorsNumber = dto.doorsNumber;
       vehicle.category = dto.category;
       vehicle.kilometers = dto.kilometers;
-      vehicle.images = dto.images.map(it => plainToClass(Image, it));
+      let oldImages = vehicle.images;
+      let newImages = dto.images.map(it => plainToClass(Image, it)).filter(it => it.id != null);
+
+      let difference = oldImages.filter(x => !newImages.includes(x));
+      difference
+          .forEach(it => {
+            this.imageService.deleteImage(it.id);
+          });
+
+      vehicle.images = dto.images.filter(it => it.file != "").map(it => plainToClass(Image, it));
+      console.log("imagens: "  +vehicle.images);
       return this.repository.save(vehicle);
     })
     .catch(

@@ -11,14 +11,9 @@ export class ImageService {
     private repository: Repository<Image>
   ) {}
 
-  async findAllByVehicleId(vehicleId: string) {
-    return (await this.repository.find({
-      where: {
-        vehicle: {
-          id: vehicleId
-        }
-      },
-      relations: ['vehicle']}));
+  async deleteImage(id: number) {
+    console.log("VAI DELETAR")
+    return await this.repository.delete(id);
   }
 
 }
