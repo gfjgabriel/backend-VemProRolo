@@ -26,6 +26,7 @@ export class AuthController {
     @Post('register')
     async register(@Body() authenticateRequest: RegisterDto) {
         try {
+            console.log(authenticateRequest)
             return await this.authService.register(authenticateRequest);
         } catch (e) {
             throw new BadRequestException(e.message);

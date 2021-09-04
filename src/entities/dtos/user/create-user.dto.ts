@@ -13,5 +13,8 @@ export class UserCreateDto {
 
     @IsNotEmpty()
     password: string;
+
+    @IsNotEmpty()
+    phone: string;
     
 }

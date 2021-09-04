@@ -23,7 +23,7 @@ export class UserService {
   ) {}
 
   createUser(userCreateDto: UserCreateDto): Promise<User> {
-    console.log(userCreateDto);
+    console.log("dto: " + userCreateDto);
     userCreateDto.password = bcrypt.hashSync(userCreateDto.password, parseInt(process.env.SALT_ROUNDS, 10));
     return this.userRepository.save(userCreateDto);
   }
