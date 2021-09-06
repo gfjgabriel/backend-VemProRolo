@@ -88,10 +88,10 @@ export class VehicleService {
     }
     let whereString = "vehicleUser.id != :currentUserId and vehicle.id NOT IN (:ids)"
     if (modelId != null) {
-      whereString += " AND model.id == " + modelId
+      whereString += " AND model.id = " + modelId
     }
     if (brandId != null) {
-      whereString += " AND brand.id == " + brandId
+      whereString += " AND brand.id = " + brandId
     }
     console.log("TESTE1") 
     console.log(whereString)
@@ -102,7 +102,7 @@ export class VehicleService {
         .leftJoinAndSelect("vehicle.images", "images")
         .leftJoinAndSelect("vehicle.model","model")
         .leftJoinAndSelect("model.brand","brand")
-        .where("vehicleUser.id != :currentUserId and vehicle.id NOT IN (:ids)", {currentUserId: userId, ids: ids})
+        .where(whereString, {currentUserId: userId, ids: ids})
         .getMany();
     return vehicles;
   }

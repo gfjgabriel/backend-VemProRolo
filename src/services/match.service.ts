@@ -34,7 +34,9 @@ export class MatchService {
         .leftJoinAndSelect("firstLike.user", "firstLikeUser")
         .leftJoinAndSelect("secondLike.user", "secondLikeUser")
         .leftJoinAndSelect("firstLike.vehicle", "firstLikeVehicle")
+        .leftJoinAndSelect("firstLikeVehicle.images", "firstLikeImages")
         .leftJoinAndSelect("secondLike.vehicle", "secondLikeVehicle")
+        .leftJoinAndSelect("secondLikeVehicle.images", "secondLikeImages")
         .where("secondLikeUser.id = :currentUserId or firstLikeUser.id = :currentUserId", {currentUserId: currentUserId})
         .getMany();
   }
