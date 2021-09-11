@@ -45,15 +45,15 @@ export class VehicleService {
       vehicle.category = dto.category;
       vehicle.kilometers = dto.kilometers;
       let oldImages = vehicle.images;
-      let newImages = dto.images.map(it => plainToClass(Image, it)).filter(it => it.id != null);
+      let newImages = dto.images.map(it => plainToClass(Image, it)).filter(it => it.id != null).map(it => it.id);
 
-      let difference = oldImages.filter(x => !newImages.includes(x));
+      let difference = oldImages.map(it => it.id).filter(x => !newImages.includes(x));
       difference
           .forEach(it => {
-            this.imageService.deleteImage(it.id);
+            this.imageService.deleteImage(it);
           });
 
-      vehicle.images = dto.images.filter(it => it.file != "").map(it => plainToClass(Image, it));
+      vehicle.images = dto.images.filter(it => it.file != undefined && it.file != "").map(it => plainToClass(Image, it));
       console.log("imagens: "  +vehicle.images);
       return this.repository.save(vehicle);
     })
