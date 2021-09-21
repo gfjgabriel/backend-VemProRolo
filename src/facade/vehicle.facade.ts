@@ -54,6 +54,26 @@ export class VehicleFacade {
         );
     }
 
+    getAllVehiclesListedForSale(brandId: number,
+                                modelId:number,
+                                search: string,
+                                minPrice: number,
+                                maxPrice: number,
+                                minKilometers: number,
+                                maxKilometers: number,
+                                doorsNumber: number) {
+        let res = this.vehicleService.getAllVehiclesListedForSale(brandId, modelId, search, minPrice, maxPrice, minKilometers, maxKilometers, doorsNumber);
+        return res
+            .then(it =>
+                it.map(item => {
+                    var vehicleDto = plainToClass(VehicleDto, item);
+                    vehicleDto.user = plainToClass(UserDto, item.user);
+                    vehicleDto.model = plainToClass(ModelDto, item.model);
+                    return vehicleDto;
+                })
+            );
+    }
+
     getAllBrands() {
         return this.vehicleService.getAllBrands();
     }

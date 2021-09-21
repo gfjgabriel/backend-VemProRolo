@@ -1,17 +1,16 @@
-import {HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { classToPlain, plainToClass } from 'class-transformer';
-import { UserDto } from 'src/entities/dtos/user/user.dto';
-import { VehicleCreateDto } from 'src/entities/dtos/vehicle/vehicle-create.dto';
-import { VehicleUpdateDto } from 'src/entities/dtos/vehicle/vehicle-update.dto';
-import { Image } from 'src/entities/image.entity';
-import { Vehicle } from 'src/entities/vehicle.entity';
-import { ErrorConstants } from 'src/utils/error-constants.enum';
-import {getManager, Not, Repository} from 'typeorm';
-import { ImageService } from './image.service';
-import { UserService } from './user.service';
-import {MatchService} from "./match.service";
-import { Model } from 'src/entities/model.entity';
+import {HttpException, HttpStatus, Injectable} from '@nestjs/common';
+import {InjectRepository} from '@nestjs/typeorm';
+import {plainToClass} from 'class-transformer';
+import {UserDto} from 'src/entities/dtos/user/user.dto';
+import {VehicleCreateDto} from 'src/entities/dtos/vehicle/vehicle-create.dto';
+import {VehicleUpdateDto} from 'src/entities/dtos/vehicle/vehicle-update.dto';
+import {Image} from 'src/entities/image.entity';
+import {Vehicle} from 'src/entities/vehicle.entity';
+import {ErrorConstants} from 'src/utils/error-constants.enum';
+import {Repository} from 'typeorm';
+import {ImageService} from './image.service';
+import {UserService} from './user.service';
+import {Model} from 'src/entities/model.entity';
 
 @Injectable()
 export class VehicleService {
@@ -108,6 +107,74 @@ export class VehicleService {
         .where(whereString, {currentUserId: userId, ids: ids})
         .getMany();
     return vehicles;
+  }
+
+  async getAllVehiclesListedForSale(brandId: number,
+                                    modelId:number,
+                                    search: string,
+                                    minPrice: number,
+                                    maxPrice: number,
+                                    minKilometers: number,
+                                    maxKilometers: number,
+                                    doorsNumber: number): Promise<Vehicle[]> {
+
+    let user = await this.userService.getCurrentUser();
+    let userId = user.id;
+
+    let whereString = "vehicleUser.id != :currentUserId AND vehicle.isForSale = true ";
+
+    if (modelId != null) {
+      whereString += " AND model.id = " + modelId;
+    }
+
+    if (brandId != null) {
+      whereString += " AND brand.id = " + brandId;
+    }
+
+    if (minPrice != null) {
+      whereString += " AND vehicle.price >= " + minPrice;
+    }
+
+    if (maxPrice != null) {
+      whereString += " AND vehicle.price <= " + maxPrice;
+    }
+
+    if (minKilometers != null) {
+      whereString += " AND vehicle.kilometers >= " + minKilometers;
+    }
+
+    if (maxKilometers != null) {
+      whereString += " AND vehicle.kilometers <= " + maxKilometers;
+    }
+
+    if (doorsNumber != null) {
+      whereString += " AND vehicle.doorsNumber = " + doorsNumber;
+    }
+
+    if (search != null) {
+      let words = search.split(" ");
+      words.forEach(word => {
+        whereString += " AND (" +
+            " model.name like '%" + word + "%'" +
+            " OR brand.name like '%" + word + "%'" +
+            " OR CONVERT(vehicle.year,char) like '%" + word + "%'" +
+            " OR vehicle.color like '%" + word + "%'" +
+            " OR vehicle.transmissionType like '%" + word + "%'" +
+            " OR vehicle.transmissionType like '%" + word + "%'" +
+            " OR vehicle.category like '%" + word + "%'" +
+            ")";
+      })
+    }
+
+    return await this.repository.createQueryBuilder("vehicle")
+        .leftJoinAndSelect("vehicle.likes", "like")
+        .leftJoinAndSelect("vehicle.user", "vehicleUser")
+        .leftJoinAndSelect("like.user", "likeUser")
+        .leftJoinAndSelect("vehicle.images", "images")
+        .leftJoinAndSelect("vehicle.model", "model")
+        .leftJoinAndSelect("model.brand", "brand")
+        .where(whereString, {currentUserId: userId})
+        .getMany();
   }
 
   async getAllBrands() {
