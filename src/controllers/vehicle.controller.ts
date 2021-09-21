@@ -1,10 +1,9 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards, Req } from '@nestjs/common';
-import { AuthorizerGuard } from '../auth/guards/cognito.guard'
-import { VehicleFacade } from 'src/facade/vehicle.facade';
-import { VehicleDto } from 'src/entities/dtos/vehicle/vehicle.dto';
-import { VehicleUpdateDto } from 'src/entities/dtos/vehicle/vehicle-update.dto';
-import { VehicleCreateDto } from 'src/entities/dtos/vehicle/vehicle-create.dto';
-import { Query } from '@nestjs/common';
+import {Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards} from '@nestjs/common';
+import {AuthorizerGuard} from '../auth/guards/cognito.guard'
+import {VehicleFacade} from 'src/facade/vehicle.facade';
+import {VehicleDto} from 'src/entities/dtos/vehicle/vehicle.dto';
+import {VehicleUpdateDto} from 'src/entities/dtos/vehicle/vehicle-update.dto';
+import {VehicleCreateDto} from 'src/entities/dtos/vehicle/vehicle-create.dto';
 
 @Controller('vehicles')
 @UseGuards(AuthorizerGuard)
@@ -28,8 +27,19 @@ export class VehicleController {
 
   @Get('to-like')
   getAllVehiclesToLike(@Query('modelId') modelId: number, @Query('brandId') brandId: number) {
-    let t = this.facade.getAllVehiclesToLike(brandId, modelId);
-    return t;
+    return this.facade.getAllVehiclesToLike(brandId, modelId);
+  }
+
+  @Get('for-sale')
+  getAllVehiclesListedForSale(@Query('modelId') modelId: number,
+                              @Query('brandId') brandId: number,
+                              @Query('search') search: string,
+                              @Query('minPrice') minPrice: number,
+                              @Query('maxPrice') maxPrice: number,
+                              @Query('minKilometers') minKilometers: number,
+                              @Query('maxKilometers') maxKilometers: number,
+                              @Query('doorsNumber') doorsNumber: number) {
+    return this.facade.getAllVehiclesListedForSale(brandId, modelId, search, minPrice, maxPrice, minKilometers, maxKilometers, doorsNumber);
   }
 
   @Get()
