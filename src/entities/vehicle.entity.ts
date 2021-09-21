@@ -12,7 +12,6 @@ export class Vehicle extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
-
     @Column({name: 'year'})
     year: number;
 
@@ -57,5 +56,13 @@ export class Vehicle extends BaseEntity {
     @OneToMany(() => Like, like => like.vehicle, { cascade: true, onDelete: 'CASCADE' })
     likes: Like[];
 
+    @Column({name: 'price', precision: 10, scale: 2, nullable: true})
+    price: number;
+
+    @Column({ name: 'is_to_like', default: false, nullable: false })
+    isToLike: Boolean;
+
+    @Column({ name: 'is_for_sale', default: false, nullable: false })
+    isForSale: Boolean;
 
 }
