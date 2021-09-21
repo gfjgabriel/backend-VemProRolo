@@ -34,5 +34,11 @@ export class VehicleCreateDto {
     images: ImageCreateDto[];
 
     user: UserDto;
+
+    price: number;
+
+    isToLike: Boolean;
+
+    isForSale: Boolean;
     
 }

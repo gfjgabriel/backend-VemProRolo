@@ -34,5 +34,11 @@ export class VehicleUpdateDto {
     doorsNumber: number;
     
     kilometers: number;
+
+    price: number;
+
+    isToLike: boolean;
+
+    isForSale: boolean;
     
 }

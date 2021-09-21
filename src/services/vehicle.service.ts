@@ -34,8 +34,8 @@ export class VehicleService {
     const { id } = dto;
     return await this.findOne(id)
     .then(vehicle => {
-      console.log(vehicle.id);
       vehicle.model = plainToClass(Model,dto.model);
+
       vehicle.year = dto.year;
       vehicle.transmissionType = dto.transmissionType;
       vehicle.color = dto.color;
@@ -44,6 +44,10 @@ export class VehicleService {
       vehicle.doorsNumber = dto.doorsNumber;
       vehicle.category = dto.category;
       vehicle.kilometers = dto.kilometers;
+      vehicle.isForSale = dto.isForSale;
+      vehicle.isToLike = dto.isToLike;
+      vehicle.price = dto.price;
+
       let oldImages = vehicle.images;
       let newImages = dto.images.map(it => plainToClass(Image, it)).filter(it => it.id != null).map(it => it.id);
 
@@ -54,7 +58,7 @@ export class VehicleService {
           });
 
       vehicle.images = dto.images.filter(it => it.file != undefined && it.file != "").map(it => plainToClass(Image, it));
-      console.log("imagens: "  +vehicle.images);
+
       return this.repository.save(vehicle);
     })
     .catch(
@@ -73,7 +77,7 @@ export class VehicleService {
   }
 
   async getAllVehiclesToLike(brandId: number, modelId:number ): Promise<Vehicle[]> {
-    console.log("PARAMS= "+ brandId +" "+ modelId)
+
     let user = await this.userService.getCurrentUser();
     let userId = user.id;
     let rawIds = await this.repository.createQueryBuilder("vehicle")
@@ -93,8 +97,7 @@ export class VehicleService {
     if (brandId != null) {
       whereString += " AND brand.id = " + brandId
     }
-    console.log("TESTE1") 
-    console.log(whereString)
+
     let vehicles =  await this.repository.createQueryBuilder("vehicle")
         .leftJoinAndSelect("vehicle.likes", "like")
         .leftJoinAndSelect("vehicle.user", "vehicleUser")
