@@ -8,7 +8,7 @@ export class Report extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column({name: 'description', length: 2000, nullable: true})
+    @Column({name: 'description', length: 2000, nullable: false})
     description: string;
 
     @ManyToOne(() => User, user => user.vehicles, { nullable: false })

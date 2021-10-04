@@ -1,13 +1,13 @@
-import { IsEnum } from "class-validator";
-import { Model } from "src/entities/model.entity";
-import { Category } from "src/entities/types/category.type";
-import { FuelType } from "src/entities/types/fuel.type";
-import { TransmissionType } from "src/entities/types/transmission.type";
-import { ImageCreateDto } from "../image/image-create.dto";
-import { UserDto } from "../user/user.dto";
+import {IsEnum} from "class-validator";
+import {Model} from "src/entities/model.entity";
+import {Category} from "src/entities/types/category.type";
+import {FuelType} from "src/entities/types/fuel.type";
+import {TransmissionType} from "src/entities/types/transmission.type";
+import {ImageCreateDto} from "../image/image-create.dto";
+import {UserDto} from "../user/user.dto";
 
 export class VehicleCreateDto {
-    
+
     brand: string;
 
     year: number;
@@ -20,7 +20,7 @@ export class VehicleCreateDto {
     fuelType: string;
 
     //@IsEnum(TransmissionType)
-    transmissionType: string; 
+    transmissionType: string;
 
     //@IsEnum(Category)
     category: string;
@@ -40,5 +40,5 @@ export class VehicleCreateDto {
     isToLike: Boolean;
 
     isForSale: Boolean;
-    
+
 }
