@@ -11,6 +11,7 @@ import { BrandModule } from './modules/brand.modules';
 import { ModelModule } from './modules/model.module';
 import {LikeModule} from "./modules/like.module";
 import {MatchModule} from "./modules/match.module";
+import {ReportModule} from "./modules/report.module";
 
 let envFilePath = '.env.development';
 console.log(`Running in ${process.env.ENVIRONMENT}`)
@@ -34,13 +35,14 @@ if (process.env.ENVIRONMENT === 'PRODUCTION') {
       migrationsRun: true,
       logging: true
     }),
-  UserModule,
-  AuthModule,
-  VehicleModule,
-  BrandModule,
-  ModelModule,
-  LikeModule,
-  MatchModule
+    UserModule,
+    AuthModule,
+    VehicleModule,
+    BrandModule,
+    ModelModule,
+    LikeModule,
+    MatchModule,
+    ReportModule
 ],
   controllers: [AppController],
   providers: [AppService],
