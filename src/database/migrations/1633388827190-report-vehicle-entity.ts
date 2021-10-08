@@ -6,6 +6,13 @@ export class reportVehicleEntity1633388827190 implements MigrationInterface {
         name: 'report',
         columns:[
             {
+                name: 'id',
+                type: 'int',
+                isPrimary: true,
+                isGenerated: true,
+                generationStrategy: 'increment'
+            },
+            {
                 name: 'description',
                 type: 'text',
                 isNullable: false

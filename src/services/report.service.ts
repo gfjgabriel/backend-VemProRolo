@@ -29,9 +29,10 @@ export class ReportService {
 
     async createReport(report: ReportCreateDto) {
         let currentUser = await this.userService.getCurrentUser();
-        let vehicle = this.vehicleService.findOne(report.vehicle.id);
+        let vehicle = await this.vehicleService.findOne(report.vehicle.id);
         report.user = plainToClass(UserDto, currentUser);
         report.vehicle = plainToClass(VehicleDto, vehicle);
+        console.log("heeey", report)
         return this.repository.save(report);
     }
 

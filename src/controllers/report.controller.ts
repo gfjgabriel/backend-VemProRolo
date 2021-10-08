@@ -16,6 +16,7 @@ export class ReportController {
 
     @Post()
     create(@Body() dto: ReportCreateDto) {
+        console.log(dto)
         return this.facade.createReport(dto);
     }
 
