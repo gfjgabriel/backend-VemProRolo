@@ -12,6 +12,7 @@ import {LikeModule} from "./modules/like.module";
 import {MatchModule} from "./modules/match.module";
 import {ReportModule} from "./modules/report.module";
 import {PlanModule} from "./modules/plan.module";
+import {UserSubscriptionModule} from "./modules/user-subscription.module";
 
 let envFilePath = '.env.development';
 console.log(`Running in ${process.env.ENVIRONMENT}`)
@@ -43,7 +44,8 @@ if (process.env.ENVIRONMENT === 'PRODUCTION') {
     LikeModule,
     MatchModule,
     ReportModule,
-    PlanModule
+    PlanModule,
+    UserSubscriptionModule
 ],
   controllers: [AppController],
   providers: [AppService],
