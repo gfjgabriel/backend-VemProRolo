@@ -18,7 +18,7 @@ export class UserSubscription extends BaseEntity {
     @Column({ name: 'active', default: true, nullable: false })
     active: Boolean;
 
-    @ManyToOne(() => User, user => user.vehicles, { nullable: false })
+    @ManyToOne(() => User, { nullable: false })
     @JoinColumn({name : 'user_id', referencedColumnName: 'id'})
     user: User;
 
