@@ -28,7 +28,7 @@ export class planAndSubscription1634135214744 implements MigrationInterface {
     });
 
     tableUserSubscription = new Table({
-        name: 'user_subscription',
+        name: 'subscription',
         columns:[
             {
                 name: 'id',

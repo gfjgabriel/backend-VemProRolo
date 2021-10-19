@@ -1,10 +1,10 @@
 import {Injectable} from "@nestjs/common";
-import {UserSubscriptionService} from "../services/user.subscription.service";
-import {UserSubscriptionCreateDto} from "../entities/dtos/usersubscription/user-subscription-create.dto";
+import {SubscriptionService} from "../services/subscription.service";
+import {SubscriptionCreateDto} from "../entities/dtos/subscription/subscription-create.dto";
 
 @Injectable()
-export class UserSubscriptionFacade {
-    constructor(private readonly userSubscriptionService: UserSubscriptionService) {
+export class SubscriptionFacade {
+    constructor(private readonly userSubscriptionService: SubscriptionService) {
     }
 
     findOne(id: number) {
@@ -15,7 +15,7 @@ export class UserSubscriptionFacade {
         return this.userSubscriptionService.cancelSubscription(id);
     }
 
-    createSubscription(dto: UserSubscriptionCreateDto) {
+    createSubscription(dto: SubscriptionCreateDto) {
         return this.userSubscriptionService.createSubscription(dto);
     }
 

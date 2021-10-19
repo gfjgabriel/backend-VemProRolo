@@ -4,7 +4,7 @@ import {Vehicle} from "./vehicle.entity";
 import {Plan} from "./plan.entity";
 
 @Entity()
-export class UserSubscription extends BaseEntity {
+export class Subscription extends BaseEntity {
 
     @PrimaryGeneratedColumn()
     id: number;

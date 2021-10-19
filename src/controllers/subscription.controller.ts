@@ -7,17 +7,17 @@ import {VehicleCreateDto} from 'src/entities/dtos/vehicle/vehicle-create.dto';
 import {Report} from "../entities/report.entity";
 import {ReportCreateDto} from "../entities/dtos/report/report-create.dto";
 import {ReportFacade} from "../facade/report.facade";
-import {UserSubscriptionFacade} from "../facade/user-subscription.facade";
-import {UserSubscriptionCreateDto} from "../entities/dtos/usersubscription/user-subscription-create.dto";
+import {SubscriptionFacade} from "../facade/subscription.facade";
+import {SubscriptionCreateDto} from "../entities/dtos/subscription/subscription-create.dto";
 
 @Controller('subscriptions')
 @UseGuards(AuthorizerGuard)
-export class UserSubscriptionController {
-    constructor(private readonly facade: UserSubscriptionFacade) {
+export class SubscriptionController {
+    constructor(private readonly facade: SubscriptionFacade) {
     }
 
     @Post()
-    create(@Body() dto: UserSubscriptionCreateDto) {
+    create(@Body() dto: SubscriptionCreateDto) {
         return this.facade.createSubscription(dto);
     }
 

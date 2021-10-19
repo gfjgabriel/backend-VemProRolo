@@ -2,22 +2,22 @@ import {Injectable} from '@nestjs/common';
 import {InjectRepository} from '@nestjs/typeorm';
 import {Repository} from 'typeorm';
 import {UserService} from './user.service';
-import {UserSubscription} from "../entities/user.subscription.entity";
+import {Subscription} from "../entities/subscription.entity";
 import {PlanService} from "./plan.service";
-import {UserSubscriptionCreateDto} from "../entities/dtos/usersubscription/user-subscription-create.dto";
+import {SubscriptionCreateDto} from "../entities/dtos/subscription/subscription-create.dto";
 
 @Injectable()
-export class UserSubscriptionService {
+export class SubscriptionService {
 
     constructor(
-        @InjectRepository(UserSubscription)
-        private repository: Repository<UserSubscription>,
+        @InjectRepository(Subscription)
+        private repository: Repository<Subscription>,
         private readonly userService: UserService,
         private readonly planService: PlanService
     ) {
     }
 
-    async createSubscription(dto: UserSubscriptionCreateDto) {
+    async createSubscription(dto: SubscriptionCreateDto) {
         let currentUser = await this.userService.getCurrentUser();
 
         let currentUserSubscription = await this.getCurrentUserSubscription();
@@ -27,7 +27,7 @@ export class UserSubscriptionService {
 
         let plan = await this.planService.findOne(dto.plan.id);
 
-        let userSubscription = new UserSubscription();
+        let userSubscription = new Subscription();
         userSubscription.user = currentUser;
         userSubscription.plan = plan;
         userSubscription.startDate = new Date();
@@ -45,11 +45,12 @@ export class UserSubscriptionService {
                 user: {
                     id: currentUserId
                 }
-            }
+            },
+            relations: ['plan']
         });
     }
 
-    async findOne(userSubscriptionId: number): Promise<UserSubscription> {
+    async findOne(userSubscriptionId: number): Promise<Subscription> {
         return (await this.repository.findOne({
             where: {
                 id: userSubscriptionId

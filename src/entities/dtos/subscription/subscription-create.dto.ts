@@ -1,6 +1,6 @@
 import {PlanIdDto} from "../plan/plan-id.dto";
 
-export class UserSubscriptionCreateDto {
+export class SubscriptionCreateDto {
 
     plan: PlanIdDto;
 
