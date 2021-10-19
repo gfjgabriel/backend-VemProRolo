@@ -56,14 +56,5 @@ export class VehicleController {
   delete(@Param() id: number): void {
     this.facade.delete(id);
   }
-  
-  @Get('allBrands')
-  getAllBrands(){
-    return this.facade.getAllBrands();
-  }
 
-  @Get('allModels')
-  getAllModels(@Param() brandId: number){
-    return this.facade.getAllModels(brandId);
-  }
 }

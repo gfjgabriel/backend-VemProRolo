@@ -1,17 +1,18 @@
-import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { UserModule } from './modules/user.module';
-import { AuthModule } from './modules/auth.module';
-import { ConfigModule } from '@nestjs/config';
-import { VehicleModule } from './modules/vehicle.module';
-import { ImageModule } from './modules/image.module';
-import { BrandModule } from './modules/brand.modules';
-import { ModelModule } from './modules/model.module';
+import {Module} from '@nestjs/common';
+import {AppController} from './app.controller';
+import {AppService} from './app.service';
+import {TypeOrmModule} from '@nestjs/typeorm';
+import {UserModule} from './modules/user.module';
+import {AuthModule} from './modules/auth.module';
+import {ConfigModule} from '@nestjs/config';
+import {VehicleModule} from './modules/vehicle.module';
+import {BrandModule} from './modules/brand.modules';
+import {ModelModule} from './modules/model.module';
 import {LikeModule} from "./modules/like.module";
 import {MatchModule} from "./modules/match.module";
 import {ReportModule} from "./modules/report.module";
+import {PlanModule} from "./modules/plan.module";
+import {SubscriptionModule} from "./modules/subscription.module";
 
 let envFilePath = '.env.development';
 console.log(`Running in ${process.env.ENVIRONMENT}`)
@@ -42,7 +43,9 @@ if (process.env.ENVIRONMENT === 'PRODUCTION') {
     ModelModule,
     LikeModule,
     MatchModule,
-    ReportModule
+    ReportModule,
+    PlanModule,
+    SubscriptionModule
 ],
   controllers: [AppController],
   providers: [AppService],
