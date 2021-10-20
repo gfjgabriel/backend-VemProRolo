@@ -13,7 +13,7 @@ export class SubscriptionService {
         @InjectRepository(Subscription)
         private repository: Repository<Subscription>,
         private readonly userService: UserService,
-        private readonly planService: PlanService
+        private readonly planService: PlanService,
     ) {
     }
 
@@ -57,6 +57,14 @@ export class SubscriptionService {
             }
         }));
     }
+
+    async checkIfUserHasAnActiveSubscription() {
+        return await this.getCurrentUserSubscription()
+            .then(result => {
+                return result && result.active;
+            })
+    }
+
 
     cancelSubscription(userSubscriptionId: number): void {
         this.repository.delete(userSubscriptionId)

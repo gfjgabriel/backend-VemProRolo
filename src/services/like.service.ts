@@ -1,7 +1,7 @@
 import {HttpException, HttpStatus, Injectable} from '@nestjs/common';
 import {InjectRepository} from '@nestjs/typeorm';
 import {Vehicle} from 'src/entities/vehicle.entity';
-import {Repository} from 'typeorm';
+import {Between, Equal, Like as LikeTypeorm, Repository, MoreThan} from 'typeorm';
 import {UserService} from './user.service';
 import {Like} from "../entities/like.entity";
 import {VehicleService} from "./vehicle.service";
@@ -10,19 +10,25 @@ import {User} from "../entities/user.entity";
 import {LikeType} from "../entities/types/like.type";
 import {MatchService} from "./match.service";
 import {ErrorConstants} from "../utils/error-constants.enum";
+import {SubscriptionService} from "./subscription.service";
 
 @Injectable()
 export class LikeService {
 
   constructor(
-    @InjectRepository(Like)
-    private repository: Repository<Like>,
-    private readonly userService: UserService,
-    private readonly vehicleService: VehicleService,
-    private readonly matchService: MatchService,
+      @InjectRepository(Like)
+      private repository: Repository<Like>,
+      private readonly userService: UserService,
+      private readonly vehicleService: VehicleService,
+      private readonly matchService: MatchService,
+      private readonly subscriptionService: SubscriptionService,
   ) {}
 
   async createLike(dto: LikeCreateDto) {
+    let userCanLike = await this.checkIfUserCanLike();
+    if (dto.type == LikeType.INTERESTED && !userCanLike) {
+      throw new HttpException(ErrorConstants.LIKE_LIMIT_REACHED, HttpStatus.FORBIDDEN);
+    }
     let like = new Like();
     like.user = await this.userService.getCurrentUser();
     like.vehicle = await this.vehicleService.findOne(dto.vehicle.id);
@@ -86,6 +92,30 @@ export class LikeService {
             throw new HttpException(ErrorConstants.LIKE_HAS_ALREADY_BEEN_COMPUTED, HttpStatus.BAD_REQUEST);
           }
         });
+  }
+
+  async countNumberOfLikesFromToday() {
+    let user = await this.userService.getCurrentUser();
+    let currentUserId = user.id;
+    let oneDayFromNow = new Date(new Date().setDate(new Date().getDate()-1));
+
+    return this.repository.count({
+      user: {
+        id: currentUserId
+      },
+      type: Equal(LikeType.INTERESTED),
+      createdDate: MoreThan(oneDayFromNow)
+    })
+  }
+
+  async checkIfUserCanLike() {
+    let userHasAnActiveSubscription = await this.subscriptionService.checkIfUserHasAnActiveSubscription();
+    if (userHasAnActiveSubscription) {
+        return true;
+    }
+
+    let count = await this.countNumberOfLikesFromToday();
+    return count < 3;
   }
 
   async deleteLike(like_id: number) {
