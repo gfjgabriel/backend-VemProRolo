@@ -12,9 +12,10 @@ import {LikeFacade} from "../facade/like.facade";
 import {LikeController} from "../controllers/like.controller";
 import {VehicleModule} from "./vehicle.module";
 import {MatchModule} from "./match.module";
+import {SubscriptionModule} from "./subscription.module";
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Like]), UserModule, VehicleModule, MatchModule],
+  imports: [TypeOrmModule.forFeature([Like]), UserModule, VehicleModule, MatchModule, SubscriptionModule],
   providers: [LikeService, LikeFacade],
   controllers: [LikeController],
   exports: [TypeOrmModule.forFeature([Like]), LikeService]
