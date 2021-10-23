@@ -89,7 +89,7 @@ export class VehicleService {
     if (ids.length === 0) {
       ids.push(0);
     }
-    let whereString = "vehicleUser.id != :currentUserId and vehicle.id NOT IN (:ids)"
+    let whereString = "vehicleUser.id != :currentUserId AND vehicle.isToLike = true AND  vehicle.id NOT IN (:ids)"
     if (modelId != null) {
       whereString += " AND model.id = " + modelId
     }
