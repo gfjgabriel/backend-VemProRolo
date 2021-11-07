@@ -115,7 +115,7 @@ export class LikeService {
     }
 
     let count = await this.countNumberOfLikesFromToday();
-    return count < 3;
+    return count < 2;
   }
 
   async deleteLike(like_id: number) {
